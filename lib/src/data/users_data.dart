@@ -5,6 +5,7 @@ import 'package:flutterv1/src/models/user.dart';
 final List<User> mockUsers = [
   User(
     id: 'u1',
+    companyId: 1,
     name: 'Juan',
     lastName: 'Pérez',
     role: Role.employee,
@@ -15,6 +16,7 @@ final List<User> mockUsers = [
   ),
   User(
     id: 'u2',
+    companyId: 1,
     name: 'María',
     lastName: 'Gómez',
     role: Role.manager,

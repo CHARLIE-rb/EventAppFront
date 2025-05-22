@@ -77,49 +77,44 @@ class SettingsScreen extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Text('Ajustes', style: theme.textTheme.displayLarge),
-                const SizedBox(height: 24),
-                SwitchListTile(
-                  title: Text('Notificaciones'),
-                  value: true,
-                  onChanged: (_) {},
-                ),
-                SwitchListTile(
-                  title: Text('Modo Oscuro'),
-                  value: theme.brightness == Brightness.dark,
-                  onChanged: (_) => context.read<ThemeProvider>().toggle(),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.info),
-                  title: const Text('Acerca de'),
-                  onTap:
-                      () => showAboutDialog(
-                        context: context,
-                        applicationName: 'Mi Flutter App',
-                        applicationVersion: '1.0.0',
-                      ),
-                ),
-                // … cualquier otro ajuste …
-                const SizedBox(height: 24),
-              ]),
-            ),
-
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: logoutButton(),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate([
+              SwitchListTile(
+                title: Text('Notificaciones'),
+                value: true,
+                onChanged: (_) {},
               ),
+              SwitchListTile(
+                title: Text('Modo Oscuro'),
+                value: theme.brightness == Brightness.dark,
+                onChanged: (_) => context.read<ThemeProvider>().toggle(),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text('Acerca de'),
+                onTap:
+                    () => showAboutDialog(
+                      context: context,
+                      applicationName: 'Mi Flutter App',
+                      applicationVersion: '1.0.0',
+                    ),
+              ),
+              const SizedBox(height: 24),
+            ]),
+          ),
+
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: logoutButton(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

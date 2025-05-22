@@ -66,61 +66,58 @@ class _HomeScreenState extends State<HomeScreen> {
     final firstDay = _svc.firstAllowedDay;
     final lastDay = _svc.lastAllowedDay;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('EVENTOS'), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // 1) Cabecera separada
-            CalendarHeader(
-              focusedDay: _focusedDay,
-              firstDay: firstDay,
-              lastDay: lastDay,
-              onLeft: _goToPreviousMonth,
-              onRight: _goToNextMonth,
-              onTapMonth: _pickMonth,
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // 1) Cabecera separada
+          CalendarHeader(
+            focusedDay: _focusedDay,
+            firstDay: firstDay,
+            lastDay: lastDay,
+            onLeft: _goToPreviousMonth,
+            onRight: _goToNextMonth,
+            onTapMonth: _pickMonth,
+          ),
 
-            // 2) Calendario separado
-            CustomEventsCalendar(
-              focusedDay: _focusedDay,
-              firstDay: firstDay,
-              lastDay: lastDay,
-              events: events,
-              onDaySelected: _onDaySelected,
-            ),
+          // 2) Calendario separado
+          CustomEventsCalendar(
+            focusedDay: _focusedDay,
+            firstDay: firstDay,
+            lastDay: lastDay,
+            events: events,
+            onDaySelected: _onDaySelected,
+          ),
 
-            const SizedBox(height: 24),
+          const SizedBox(height: 24),
 
-            // 3) Lista de eventos
-            Expanded(
-              child: ListView.builder(
-                itemCount: events.length,
-                itemBuilder: (ctx, i) {
-                  final e = events[i];
-                  return Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.event),
-                      title: Text(e.title),
-                      subtitle: Text(
-                        '${e.startDateTime.day}/${e.startDateTime.month}/${e.startDateTime.year} '
-                        '– €${(e.ratePerHour * e.endDateTime.difference(e.startDateTime).inHours).toStringAsFixed(2)}',
-                      ),
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EventDetailScreen(event: e),
-                            ),
-                          ),
+          // 3) Lista de eventos
+          Expanded(
+            child: ListView.builder(
+              itemCount: events.length,
+              itemBuilder: (ctx, i) {
+                final e = events[i];
+                return Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.event),
+                    title: Text(e.title),
+                    subtitle: Text(
+                      '${e.startDateTime.day}/${e.startDateTime.month}/${e.startDateTime.year} '
+                      '– €${(e.ratePerHour * e.endDateTime.difference(e.startDateTime).inHours).toStringAsFixed(2)}',
                     ),
-                  );
-                },
-              ),
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EventDetailScreen(event: e),
+                          ),
+                        ),
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -30,7 +30,30 @@ class CustomEventsCalendar extends StatelessWidget {
       calendarFormat: CalendarFormat.month,
       startingDayOfWeek: StartingDayOfWeek.monday,
       selectedDayPredicate: (_) => false,
+
       calendarStyle: CalendarStyle(
+        // aquí van los overrides para "hoy"
+        todayDecoration: BoxDecoration(
+          color: theme.colorScheme.onSurface.withAlpha((0.4 * 255).round()),
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        todayTextStyle: TextStyle(
+          color: theme.colorScheme.surface,
+          fontWeight: FontWeight.bold,
+        ),
+
+        // // si también usas selección:
+        // selectedDecoration: BoxDecoration(
+        //   color: theme.colorScheme.secondary,
+        //   shape: BoxShape.rectangle,
+        //   borderRadius: BorderRadius.circular(4),
+        // ),
+        // selectedTextStyle: TextStyle(
+        //   color: theme.colorScheme.onSecondary,
+        //   fontWeight: FontWeight.bold,
+        // ),
+
         // estilo para días de la semana normales
         defaultTextStyle: TextStyle(
           color: theme.colorScheme.onSurface,
@@ -70,7 +93,7 @@ class CustomEventsCalendar extends StatelessWidget {
                 height: 6,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: theme.colorScheme.secondary,
+                  color: theme.colorScheme.primary,
                 ),
               ),
             );

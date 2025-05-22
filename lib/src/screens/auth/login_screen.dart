@@ -3,6 +3,7 @@ import 'package:flutterv1/src/Utilities/routes.dart';
 import 'package:flutterv1/src/lib/constants/app_constants.dart';
 import 'package:flutterv1/src/providers/auth_provider.dart';
 import 'package:flutterv1/src/providers/theme_provider.dart';
+import 'package:flutterv1/src/widgets/mini/invierte_imagen_black_and_white.dart';
 import 'package:provider/provider.dart';
 // import 'package:auth_app_flutter/Utilities/routes.dart';
 
@@ -25,17 +26,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      // 1) AppBar transparente arriba
+      backgroundColor: theme.colorScheme.onPrimary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
             icon: Icon(
-              !isDark
-                  ? Icons
-                      .dark_mode_outlined // si está oscuro, muestro “dark”
-                  : Icons.light_mode_outlined, // si está claro, “light”
+              !isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
               color: theme.colorScheme.onSurface,
             ),
             onPressed: () => context.read<ThemeProvider>().toggle(),
@@ -43,12 +41,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
 
-      backgroundColor: !isDark ? Colors.white : Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildLogo(theme),
+              InvierteImagenBnW(
+                theme: theme,
+                imagePath: AppConstants.LOGO_PATH,
+                width: 300,
+              ),
               const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -145,10 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       // ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor: theme.colorScheme.primary,
+                          foregroundColor: theme.colorScheme.onPrimary,
                           shape: const StadiumBorder(),
                           elevation: 0,
                         ),
@@ -163,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               'Sign In',
                               style: theme.textTheme.displayLarge?.copyWith(
-                                color: !isDark ? Colors.white : Colors.black,
+                                color: theme.colorScheme.surface,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -224,39 +223,5 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     }
-  }
-
-  Widget _buildLogo(ThemeData theme) {
-    final isDark = theme.brightness == Brightness.dark;
-    final filter =
-        !isDark
-            ? const ColorFilter.matrix(<double>[
-              -1,
-              0,
-              0,
-              0,
-              255,
-              0,
-              -1,
-              0,
-              0,
-              255,
-              0,
-              0,
-              -1,
-              0,
-              255,
-              0,
-              0,
-              0,
-              1,
-              0,
-            ])
-            : const ColorFilter.mode(Colors.transparent, BlendMode.multiply);
-
-    return ColorFiltered(
-      colorFilter: filter,
-      child: Image.asset('assets/images/logoWilde.png'),
-    );
   }
 }
