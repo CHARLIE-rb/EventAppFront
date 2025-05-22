@@ -1,10 +1,6 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/src/Utilities/routes.dart';
-import 'package:flutterv1/src/config/app_theme_style.dart';
-import 'package:flutterv1/src/providers/auth_provider.dart';
-import 'package:flutterv1/src/providers/settings_provider.dart';
-import 'package:flutterv1/src/providers/theme_provider.dart';
+import 'package:flutterv1/core/navigation/routes.dart';
 // import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
