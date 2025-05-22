@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutterv1/src/models/company.dart';
+import 'package:flutterv1/features/companies/domain/entities/company.dart';
 
 final List<Company> mockCompanies = [
   Company(

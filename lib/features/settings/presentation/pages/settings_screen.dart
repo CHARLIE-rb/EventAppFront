@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/core/navigation/routes.dart';
-import 'package:flutterv1/src/providers/auth_provider.dart';
-import 'package:flutterv1/src/providers/theme_provider.dart';
+import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {

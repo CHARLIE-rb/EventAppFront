@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutterv1/src/models/role.dart';
-import 'package:flutterv1/src/widgets/event_detail_widgets/details_card.dart';
-import 'package:flutterv1/src/widgets/event_detail_widgets/expandible_items_list.dart';
+import 'package:flutterv1/features/auth/domain/entities/user.dart';
+import 'package:flutterv1/features/events/data/datasources/event_service.dart';
+import 'package:flutterv1/features/events/data/models/event.dart';
+import 'package:flutterv1/features/events/presentation/widgets/details_card.dart';
+import 'package:flutterv1/features/events/presentation/widgets/expandible_items_list.dart';
 import 'package:intl/intl.dart';
-
-import '../../models/event.dart';
-import '../../services/event_service.dart';
 
 class EventDetailScreen extends StatefulWidget {
   final Event event;

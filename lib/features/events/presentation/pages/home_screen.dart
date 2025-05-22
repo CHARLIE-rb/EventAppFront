@@ -1,10 +1,10 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/src/screens/logged/event_day_screen.dart';
-import 'package:flutterv1/src/screens/logged/event_detail_screen.dart';
-import 'package:flutterv1/src/services/event_service.dart';
-import 'package:flutterv1/src/widgets/calendario/custom_calendar_header.dart';
-import 'package:flutterv1/src/widgets/calendario/custom_events_calendar.dart';
+import 'package:flutterv1/features/events/data/datasources/event_service.dart';
+import 'package:flutterv1/features/events/presentation/pages/event_day_screen.dart';
+import 'package:flutterv1/features/events/presentation/pages/event_detail_screen.dart';
+import 'package:flutterv1/features/events/presentation/widgets/custom_calendar_header.dart';
+import 'package:flutterv1/features/events/presentation/widgets/custom_events_calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:flutterv1/src/models/role.dart';
+enum Role { ceo, manager, employee, company }
 
 class User {
   final String id;

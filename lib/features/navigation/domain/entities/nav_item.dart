@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Un item de la barra inferior que incluye su pantalla asociada
 class NavItem implements Comparable<NavItem> {
   final int priority;
   final IconData icon;

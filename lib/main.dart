@@ -1,27 +1,40 @@
 // lib/main.dart
+
 import 'package:flutter/material.dart';
-import 'package:flutterv1/core/navigation/routes.dart';
-// import 'package:intl/date_symbol_data_file.dart';
+import 'package:flutterv1/features/navigation/presentation/providers/nav_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'core/di.dart'; // <<-- importa tu di
+import 'core/navigation/routes.dart';
+import 'shared/themes/app_theme_style.dart'; // <<-- donde esté tu AppTheme
+
+import 'features/auth/presentation/providers/auth_provider.dart';
+import 'features/settings/presentation/providers/settings_provider.dart';
+import 'features/theme/presentation/providers/theme_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Inicializa solo la localización 'es' (o null para todas)
   await initializeDateFormatting('es', null);
+
+  init(); // <<-- inicializa GetIt
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => SettingsProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        // ChangeNotifierProvider(create: (_) => CartProvider()),
-        // Provider(create: (_) => ProductsService()), // un servicio “simple”
-        // FutureProvider<List<Product>>(
-        // un provider asíncrono
-        // create: (_) => ProductsService().fetchAll(),
-        // initialData: const [],
-        // ),
+        ChangeNotifierProvider<AuthProvider>(
+          create: (_) => getIt<AuthProvider>(),
+        ),
+        ChangeNotifierProvider<SettingsProvider>(
+          create: (_) => getIt<SettingsProvider>(),
+        ),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => getIt<ThemeProvider>(),
+        ),
+        ChangeNotifierProvider<NavNotifier>(
+          create: (_) => getIt<NavNotifier>(),
+        ),
+        // ... si más adelante agregas otros Notifiers
       ],
       child: const MyApp(),
     ),
@@ -30,7 +43,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     final themeProv = context.watch<ThemeProvider>();
@@ -40,9 +52,9 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProv.mode,
-      initialRoute: AppRoutes.root, // ruta inicial
-      routes: AppRoutes.routes, // rutas definidas en AppRoutes
-      onUnknownRoute: AppRoutes.onUnknownRoute, // ruta desconocida
+      initialRoute: AppRoutes.root,
+      routes: AppRoutes.routes,
+      onUnknownRoute: AppRoutes.onUnknownRoute,
     );
   }
 }

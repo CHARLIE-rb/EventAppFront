@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/config/app_constants.dart';
-import 'package:flutterv1/src/models/user.dart';
-import 'package:flutterv1/src/providers/auth_provider.dart';
-import 'package:flutterv1/src/providers/theme_provider.dart';
-import 'package:flutterv1/src/screens/root_app_flow.dart';
+import 'package:flutterv1/features/auth/domain/entities/user.dart';
+import 'package:flutterv1/features/auth/presentation/pages/root_app_flow.dart';
+import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 

@@ -1,8 +1,7 @@
-import 'package:flutterv1/src/data/events_data.dart';
-import 'package:flutterv1/src/models/event.dart';
-import 'package:flutterv1/src/models/role.dart';
-import 'package:flutterv1/src/models/user.dart';
-import 'package:flutterv1/src/services/auth_service.dart';
+import 'package:flutterv1/features/auth/data/datasources/auth_service.dart';
+import 'package:flutterv1/features/auth/domain/entities/user.dart';
+import 'package:flutterv1/features/events/data/datasources/events_data.dart';
+import 'package:flutterv1/features/events/data/models/event.dart';
 
 class EventService {
   AuthService authService = AuthService();

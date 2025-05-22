@@ -1,7 +1,7 @@
 // lib/widgets/events_calendar.dart
 import 'package:flutter/material.dart';
+import 'package:flutterv1/features/events/data/models/event.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutterv1/src/models/event.dart';
 
 class CustomEventsCalendar extends StatelessWidget {
   final DateTime focusedDay;

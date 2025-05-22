@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/src/Utilities/expandible_items.dart';
+import 'package:flutterv1/features/events/data/datasources/expandible_items.dart';
 
 class EventExpansionPanels extends StatefulWidget {
   const EventExpansionPanels({super.key});

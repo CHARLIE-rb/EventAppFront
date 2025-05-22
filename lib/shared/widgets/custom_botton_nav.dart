@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/forWidgets/nav_item.dart';
+import 'package:flutterv1/features/navigation/domain/entities/nav_item.dart';
 
 /// Barra inferior que dibuja tantos iconos como items le pases.
 class CustomBottomNav extends StatelessWidget {

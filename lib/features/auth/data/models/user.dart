@@ -1,4 +1,4 @@
-import 'package:flutterv1/src/models/role.dart';
+import 'package:flutterv1/features/auth/domain/entities/user.dart';
 
 class User {
   final String id;
