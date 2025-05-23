@@ -17,7 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('es', null);
 
-  init(); // <<-- inicializa GetIt
+  init();
 
   runApp(
     MultiProvider(

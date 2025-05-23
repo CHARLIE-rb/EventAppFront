@@ -44,7 +44,8 @@ dependencies:
   url_launcher: ^6.1.5
   flutter_rating_bar: ^4.0.0
   google_maps_flutter: ^2.1.2
-  flutter_staggered_grid_view: ^0.6.2
+  flutter_staggered_grid_view: ^0.7.0
+  get_it: ^8.0.3
   #intl: ^0.17.0 para cargar mas de un idioma automaticamente
 
 dev_dependencies:
