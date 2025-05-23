@@ -1,7 +1,4 @@
-// lib/main.dart
-
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/navigation/presentation/providers/nav_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -31,10 +28,6 @@ void main() async {
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => getIt<ThemeProvider>(),
         ),
-        ChangeNotifierProvider<NavNotifier>(
-          create: (_) => getIt<NavNotifier>(),
-        ),
-        // ... si más adelante agregas otros Notifiers
       ],
       child: const MyApp(),
     ),
@@ -53,8 +46,8 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProv.mode,
       initialRoute: AppRoutes.root,
-      // routes: AppRoutes.routes,
-      // onUnknownRoute: AppRoutes.onUnknownRoute,
+      routes: AppRoutes.routes,
+      onUnknownRoute: AppRoutes.onUnknownRoute,
     );
   }
 }

@@ -1,11 +1,11 @@
 // lib/screens/event_day_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/data/models/event_model.dart';
+import 'package:flutterv1/features/events/domain/entities/event.dart';
 import 'package:flutterv1/features/events/presentation/pages/event_detail_screen.dart';
 
 class EventDayScreen extends StatelessWidget {
   final DateTime date;
-  final List<EventModel> events;
+  final List<Event> events;
 
   const EventDayScreen({super.key, required this.date, required this.events});
 

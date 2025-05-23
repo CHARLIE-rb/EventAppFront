@@ -1,156 +1,186 @@
+// lib/features/events/presentation/pages/event_detail_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
-import 'package:flutterv1/features/events/data/models/event_model.dart';
-import 'package:flutterv1/features/events/presentation/widgets/details_card.dart';
-import 'package:flutterv1/features/events/presentation/widgets/expandible_items_list.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class EventDetailScreen extends StatefulWidget {
+import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flutterv1/features/events/domain/entities/event.dart';
+import '../providers/comments_notifier.dart';
+
+class EventDetailScreen extends StatelessWidget {
+  final Event event;
   const EventDetailScreen({super.key, required this.event});
 
-  final EventModel event;
-
   @override
-  State<EventDetailScreen> createState() => _EventDetailScreenState();
+  Widget build(BuildContext context) {
+    final auth = context.read<AuthProvider>();
+    return ChangeNotifierProvider<CommentsNotifier>(
+      create: (_) => getIt<CommentsNotifier>(param1: event),
+      child: _EventDetailBody(event: event, currentUser: auth.user!),
+    );
+  }
 }
 
-class _EventDetailScreenState extends State<EventDetailScreen> {
-  // final _svc = EventService();
+class _EventDetailBody extends StatefulWidget {
+  final Event event;
+  final User currentUser;
+  const _EventDetailBody({required this.event, required this.currentUser});
+  @override
+  State<_EventDetailBody> createState() => _EventDetailBodyState();
+}
 
-  double? _myRating;
-  String? _myComment;
-  bool _submitted = false;
+class _EventDetailBodyState extends State<_EventDetailBody> {
+  double? _rating;
+  String? _comment;
 
   @override
   void initState() {
     super.initState();
-    int i = 0;
-    while (i < widget.event.employeeFeedbacks.length &&
-        widget.event.employeeFeedbacks[i].id != _svc.currentUser.id) {
-      i++;
-    }
-    if (i < widget.event.employeeFeedbacks.length) {
-      FeedBackModel existing = widget.event.employeeFeedbacks[i];
-      _myRating = existing.rating.toDouble();
-      _myComment = existing.comment;
-      _submitted = true;
-      existing = widget.event.employeeFeedbacks[i];
+    final vm = context.read<CommentsNotifier>();
+    final me = vm.myFeedback;
+    if (me != null) {
+      _rating = me.rating.toDouble();
+      _comment = me.comment;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<CommentsNotifier>();
     final theme = Theme.of(context);
-    final e = widget.event;
-    final now = DateTime.now();
-    final isPast = DateUtils.dateOnly(
-      now,
-    ).isAfter(DateUtils.dateOnly(e.endDateTime));
-    final within48h =
-        now.isAfter(e.endDateTime) &&
-        now.isBefore(e.endDateTime.add(Duration(hours: 48)));
-    final isEmployee = _svc.currentUser.role != Role.manager;
+    final dfDate = DateFormat.yMMMMd(
+      Localizations.localeOf(context).toString(),
+    );
+    final dfTime = DateFormat.Hm();
+
+    // Cálculos de precios y duración...
+    final hours =
+        widget.event.endDateTime.difference(widget.event.startDateTime).inHours;
+    final totalPrice = widget.event.ratePerHour * hours;
 
     return Scaffold(
-      appBar: AppBar(title: Text(e.brand, style: TextStyle(fontSize: 22))),
+      appBar: AppBar(title: Text(widget.event.title)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              e.title,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
+            // — Detalles básicos (igual que antes) —
+            Text(widget.event.brand, style: theme.textTheme.headlineSmall),
             const SizedBox(height: 12),
-            DetailsCard(event: e, theme: theme),
-            SizedBox(height: 16),
-            EventExpansionPanels(),
-            SizedBox(height: 24),
-            if (!isPast)
-              if (isEmployee && within48h) ...[
-                Text(
-                  'Tu feedback',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(height: 8),
 
-                RatingBar.builder(
-                  initialRating: _myRating ?? 0,
-                  minRating: 0.5,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemSize: 32,
-                  itemBuilder: (_, __) => Icon(Icons.star, color: Colors.amber),
-                  onRatingUpdate: (r) {
-                    setState(() => _myRating = r);
-                  },
-                ),
+            // aquí tu DetailsCard y ExpandibleItemsList…
+            const SizedBox(height: 24),
 
-                TextField(
-                  controller: TextEditingController(text: _myComment),
-                  decoration: InputDecoration(
-                    labelText: 'Comentario (opcional)',
-                  ),
-                  onChanged: (t) => _myComment = t,
+            // — SECCIÓN DE FEEDBACK —
+            if (vm.isManager) ...[
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => _EmployeeCommentsDialog(),
+                  );
+                },
+                child: const Text('Ver feedback de empleados'),
+              ),
+            ] else if ((vm.isEmployee || vm.isCompany) &&
+                vm.isPastEvent &&
+                vm.within48h) ...[
+              Text('Tu feedback', style: theme.textTheme.titleMedium),
+              const SizedBox(height: 8),
+              RatingBar.builder(
+                initialRating: _rating ?? 0,
+                minRating: 0.5,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemSize: 32,
+                itemBuilder:
+                    (_, __) => const Icon(Icons.star, color: Colors.amber),
+                onRatingUpdate: (r) => setState(() => _rating = r),
+              ),
+              TextField(
+                controller: TextEditingController(text: _comment),
+                decoration: const InputDecoration(
+                  labelText: 'Comentario (opcional)',
                 ),
+                onChanged: (t) => _comment = t,
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed:
+                    (_rating != null) && !vm.isLoading
+                        ? () => vm.submitFeedback(
+                          rating: _rating!.toInt(),
+                          comment: _comment,
+                        )
+                        : null,
+                child:
+                    vm.isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(vm.myFeedback == null ? 'Enviar' : 'Actualizar'),
+              ),
+            ],
 
-                SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed:
-                      (_myRating != null && !_submitted)
-                          ? () {
-                            setState(() {
-                              widget.event.employeeFeedbacks.add(
-                                FeedBackModel(
-                                  id: _svc.currentUser.id,
-                                  rating: _myRating!.toInt(),
-                                  comment: _myComment ?? '',
-                                  timestamp: DateTime.now(),
-                                ),
-                              );
-                              _submitted = true;
-                            });
-                          }
-                          : null,
-                  child: Text(_submitted ? 'Enviado' : 'Enviar feedback'),
-                ),
-              ],
-
-            // — FEEDBACK FIJO tras 48h o si ya estaba enviado —
-            if (isPast && !within48h) ...[
-              if (e.employeeFeedbacks.isNotEmpty) ...[
-                Divider(),
-                Text(
-                  'Feedback',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                ),
-                ...e.employeeFeedbacks.map(
-                  (fb) => ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('${fb.rating}/5'),
-                    subtitle: Text(fb.comment),
-                    trailing: Text(DateFormat.Hm().format(fb.timestamp)),
-                  ),
-                ),
-              ],
-
-              if (e.companyFeedback != null) ...[
-                Divider(),
+            // — Feedback fijo tras 48h —
+            if (vm.isPastEvent && !vm.within48h) ...[
+              const Divider(),
+              if (widget.event.companyFeedback != null) ...[
+                Text('Feedback empresa', style: theme.textTheme.titleMedium),
                 ListTile(
-                  leading: Icon(Icons.business),
-                  title: Text(
-                    'Feedback empresa: ${e.companyFeedback!.rating}/5',
-                  ),
-                  subtitle: Text(e.companyFeedback?.comment ?? ''),
+                  leading: const Icon(Icons.business),
+                  title: Text('${widget.event.companyFeedback!.rating}/5'),
+                  subtitle: Text(widget.event.companyFeedback!.comment),
                 ),
               ],
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Dialog que muestra todos los comentarios de empleados
+class _EmployeeCommentsDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<CommentsNotifier>();
+    return Dialog(
+      insetPadding: const EdgeInsets.all(16),
+      child: SizedBox(
+        height: 400,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Feedback Empleados',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: vm.employeeComments.length,
+                itemBuilder: (_, i) {
+                  final fb = vm.employeeComments[i];
+                  return ListTile(
+                    leading: const Icon(Icons.person),
+                    title: Text('${fb.rating}/5'),
+                    subtitle: Text(fb.comment),
+                    trailing: Text(DateFormat.Hm().format(fb.timestamp)),
+                  );
+                },
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cerrar'),
+            ),
           ],
         ),
       ),

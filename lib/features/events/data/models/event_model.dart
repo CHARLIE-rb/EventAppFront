@@ -28,6 +28,9 @@ class EventModel {
   final String instructions;
   final double ratePerHour;
 
+  final List<String> employeesIds;
+  final String managerInChargeId;
+
   final List<FeedBackModel> employeeFeedbacks;
   final FeedBackModel? companyFeedback;
 
@@ -46,6 +49,9 @@ class EventModel {
     required this.clothesImageUrl,
     required this.instructions,
     required this.ratePerHour,
+
+    required this.employeesIds,
+    required this.managerInChargeId,
 
     this.companyFeedback,
     this.employeeFeedbacks = const [],

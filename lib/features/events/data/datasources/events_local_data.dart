@@ -31,6 +31,8 @@ final List<EventModel> mockEvents = [
         timestamp: DateTime(2025, 5, 20, 13, 0),
       ),
     ],
+    employeesIds: ['u1'],
+    managerInChargeId: 'u2',
   ),
 
   EventModel(
@@ -48,8 +50,8 @@ final List<EventModel> mockEvents = [
     clothesImageUrl: 'https://example.com/images/casual.png',
     instructions: 'Traer portátil con Flutter.',
     ratePerHour: 30.0,
+    employeesIds: ['u1'],
+    managerInChargeId: 'u2',
     // aún no feedback porque es futuro
   ),
-
-  // … otros eventos …
 ];

@@ -10,6 +10,7 @@ final mockUserModel = <UserModel>[
     email: 'ana@ej.com',
     password: '1234',
     pin: '0000',
+    eventsIds: ['e1', 'e2'],
     role: Role.employee,
   ),
   UserModel(
@@ -18,8 +19,9 @@ final mockUserModel = <UserModel>[
     name: 'Pedro',
     lastName: 'Lopez',
     email: 'pedro@ej.com',
-    password: 'abcd',
+    password: '123456',
     pin: '1111',
+    eventsIds: ['e1', 'e2'],
     role: Role.manager,
   ),
 ];

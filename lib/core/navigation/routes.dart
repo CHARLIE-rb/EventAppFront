@@ -1,10 +1,13 @@
 // lib/src/routes.dart
 import 'package:flutter/material.dart';
+import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
 import 'package:flutterv1/features/auth/presentation/pages/forgot_password.dart';
 import 'package:flutterv1/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutterv1/features/auth/presentation/pages/register_screen.dart';
 import 'package:flutterv1/features/auth/presentation/pages/root_app_flow.dart';
 import 'package:flutterv1/features/auth/presentation/pages/root_screen.dart';
+import 'package:flutterv1/features/navigation/presentation/providers/nav_notifier.dart';
+import 'package:provider/provider.dart';
 
 class AppRoutes {
   // 1. Definición de nombres de ruta como constantes
@@ -20,15 +23,20 @@ class AppRoutes {
     login: (BuildContext ctx) => const LoginScreen(),
     signup: (BuildContext ctx) => const RegisterScreen(),
     recover: (BuildContext ctx) => const ForgotPassword(),
-    home: (BuildContext ctx) => const RootAppFlow(),
+    home:
+        (BuildContext ctx) => ChangeNotifierProvider(
+          create: (_) => getIt<NavNotifier>(),
+          child: const RootAppFlow(),
+        ),
   };
 
   // 3. (Opcional) Función para generar rutas dinámicas / interceptar rutas desconocidas
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    // Por ejemplo, podrías manejar rutas con parámetros aquí
-    // if (settings.name!.startsWith('/detail/')) { ... }
-
-    // Si no coinciden, puedes devolver null para que Flutter use el mapa estático
+    // ejemplo: rutas con parámetros
+    // if (settings.name!.startsWith('/detail/')) {
+    //   final id = settings.name!.split('/').last;
+    //   return MaterialPageRoute(builder: (_) => DetailScreen(id: id));
+    // }
     return null;
   }
 

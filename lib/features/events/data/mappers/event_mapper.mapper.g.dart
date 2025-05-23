@@ -26,6 +26,8 @@ class EventMapperImpl extends EventMapper {
       clothesImageUrl: model.clothesImageUrl,
       instructions: model.instructions,
       ratePerHour: model.ratePerHour,
+      employeesIds: model.employeesIds.map((e) => e).toList(),
+      managerInChargeId: model.managerInChargeId,
       companyFeedback: model.companyFeedback == null
           ? null
           : toFeedBack(model.companyFeedback!),
@@ -52,6 +54,8 @@ class EventMapperImpl extends EventMapper {
       clothesImageUrl: user.clothesImageUrl,
       instructions: user.instructions,
       ratePerHour: user.ratePerHour,
+      employeesIds: user.employeesIds.map((e) => e).toList(),
+      managerInChargeId: user.managerInChargeId,
       companyFeedback: user.companyFeedback == null
           ? null
           : toFeedbackModel(user.companyFeedback!),

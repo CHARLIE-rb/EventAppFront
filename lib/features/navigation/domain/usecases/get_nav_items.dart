@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/features/navigation/domain/entities/nav_item.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart' show Role;
-import 'package:flutterv1/features/events/presentation/pages/home_screen.dart';
+import 'package:flutterv1/features/events/presentation/pages/events_screen.dart';
 import 'package:flutterv1/features/profile/presentations/pages/profile_screen.dart';
 import 'package:flutterv1/features/settings/presentation/pages/settings_screen.dart';
 
@@ -11,7 +11,7 @@ class GetNavItems {
     NavItem(
       icon: Icons.home,
       label: 'Eventos',
-      screen: HomeScreen(),
+      screen: EventsScreen(),
       priority: 1,
     ),
     NavItem(

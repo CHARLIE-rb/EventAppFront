@@ -28,6 +28,9 @@ class Event {
   final String instructions;
   final double ratePerHour;
 
+  final List<String> employeesIds;
+  final String managerInChargeId;
+
   final List<FeedBack> employeeFeedbacks;
   final FeedBack? companyFeedback;
 
@@ -46,6 +49,9 @@ class Event {
     required this.clothesImageUrl,
     required this.instructions,
     required this.ratePerHour,
+
+    required this.employeesIds,
+    required this.managerInChargeId,
 
     this.companyFeedback,
     this.employeeFeedbacks = const [],

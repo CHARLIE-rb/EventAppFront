@@ -28,8 +28,4 @@ void initAuthModule(GetIt getIt) {
   getIt.registerFactory(
     () => AuthProvider(getIt(), getIt(), getIt(), getIt(), getIt()),
   );
-  // // AppRoutes, inyectándole las pantallas
-  // getIt.registerLazySingleton<AppRoutes>(
-  //   () => AppRoutes(serviceLocator: getIt),
-  // );
 }

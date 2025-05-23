@@ -4,6 +4,7 @@ import '../../domain/entities/user.dart';
 class UserModel {
   final String id, name, lastName, email, password, pin;
   final int companyId;
+  final List<String> eventsIds;
   final Role role;
 
   UserModel({
@@ -14,6 +15,7 @@ class UserModel {
     required this.email,
     required this.password,
     required this.pin,
+    this.eventsIds = const [],
     required this.role,
   });
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -24,6 +26,8 @@ class UserModel {
     email: json['email'] as String,
     password: json['password'] as String,
     pin: json['pin'] as String,
+    eventsIds:
+        (json['events_ids'] as List<dynamic>).map((e) => e as String).toList(),
     role: Role.values.firstWhere((e) => e.toString() == 'Role.${json['role']}'),
   );
   Map<String, dynamic> toJson() => {
@@ -34,6 +38,7 @@ class UserModel {
     'email': email,
     'password': password,
     'pin': pin,
+    'events_ids': eventsIds,
     'role': role.toString().split('.').last,
   };
 }
