@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutterv1/features/auth/domain/entities/auth_status.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
 import 'package:flutterv1/features/auth/domain/usecases/get_current_user.dart';
 import 'package:flutterv1/features/auth/domain/usecases/login_with_email.dart';
@@ -12,11 +13,13 @@ class AuthProvider extends ChangeNotifier {
   final GetCurrentUser _getUser;
   final RegisterUser _registerUser;
   final Logout _logout;
+  AuthStatus _authStatus = AuthStatus.uninitialized;
+
   String? _errorMessage;
 
   String? get errorMessage => _errorMessage;
   User? get user => _getUser();
-  bool get isLoggedIn => user != null;
+  AuthStatus get authStatus => _authStatus;
 
   AuthProvider(
     this._loginEmail,
@@ -24,7 +27,19 @@ class AuthProvider extends ChangeNotifier {
     this._getUser,
     this._registerUser,
     this._logout,
-  );
+  ) {
+    _load();
+  }
+
+  Future<void> _load() async {
+    final user = _getUser();
+    if (user != null) {
+      _authStatus = AuthStatus.pinRequired;
+    } else {
+      _authStatus = AuthStatus.unauthenticated;
+    }
+    notifyListeners();
+  }
 
   Future<bool> loginMail(String email, String pass) async {
     try {

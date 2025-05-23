@@ -1,13 +1,9 @@
 // lib/src/routes.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
 import 'package:flutterv1/features/auth/presentation/pages/forgot_password.dart';
 import 'package:flutterv1/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutterv1/features/auth/presentation/pages/register_screen.dart';
-import 'package:flutterv1/features/auth/presentation/pages/root_app_flow.dart';
 import 'package:flutterv1/features/auth/presentation/pages/root_screen.dart';
-import 'package:flutterv1/features/navigation/presentation/providers/nav_notifier.dart';
-import 'package:provider/provider.dart';
 
 class AppRoutes {
   // 1. Definición de nombres de ruta como constantes
@@ -15,7 +11,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String signup = '/signup';
   static const String recover = '/recover';
-  static const String home = '/home'; // aquí podrías poner tu RootAppFlow
+  // static const String home = '/home'; // aquí podrías poner tu RootAppFlow
 
   // 2. Mapa de rutas
   static final Map<String, WidgetBuilder> routes = {
@@ -23,11 +19,11 @@ class AppRoutes {
     login: (BuildContext ctx) => const LoginScreen(),
     signup: (BuildContext ctx) => const RegisterScreen(),
     recover: (BuildContext ctx) => const ForgotPassword(),
-    home:
-        (BuildContext ctx) => ChangeNotifierProvider(
-          create: (_) => getIt<NavNotifier>(),
-          child: const RootAppFlow(),
-        ),
+    // home:
+    //     (BuildContext ctx) => ChangeNotifierProvider(
+    //       create: (_) => getIt<NavNotifier>(),
+    //       child: const RootAppFlow(),
+    //     ),
   };
 
   // 3. (Opcional) Función para generar rutas dinámicas / interceptar rutas desconocidas

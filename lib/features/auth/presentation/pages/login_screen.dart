@@ -225,17 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _password,
       );
 
-      if (ok) {
-        // Si loginMail devuelve true, navegamos al home
-        if (mounted) {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            AppRoutes.home,
-            (route) => false,
-          );
-        }
-      } else {
-        // Si devuelve false, mostramos el error desde el provider o uno genérico
+      if (!ok) {
         setState(() {
           _error =
               context.read<AuthProvider>().errorMessage ??

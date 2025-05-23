@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/config/app_constants.dart';
-import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
-import 'package:flutterv1/features/auth/presentation/pages/root_app_flow.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
 import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
 import 'package:flutterv1/shared/widgets/mini/invierte_imagen_black_and_white.dart';
 import 'package:local_auth/local_auth.dart';
@@ -38,20 +35,20 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
     } catch (e) {
       _showError("Error de autenticación: $e");
     }
-    if (mounted && didAuth) {
-      Navigator.of(
-        context,
-        // ).pushReplacement(MaterialPageRoute(builder: (_) => RootAppFlow()));
-      ).pushReplacement(
-        MaterialPageRoute(
-          builder:
-              (_) => ChangeNotifierProvider(
-                create: (_) => getIt<EventsNotifier>(),
-                child: RootAppFlow(),
-              ),
-        ),
-      );
-    }
+    // if (mounted && didAuth) {
+    //   Navigator.of(
+    //     context,
+    //     // ).pushReplacement(MaterialPageRoute(builder: (_) => RootAppFlow()));
+    //   ).pushReplacement(
+    //     MaterialPageRoute(
+    //       builder:
+    //           (_) => ChangeNotifierProvider(
+    //             create: (_) => getIt<EventsNotifier>(),
+    //             child: RootAppFlow(),
+    //           ),
+    //     ),
+    //   );
+    // }
   }
 
   void _showError(String msg) {
@@ -76,11 +73,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
     } catch (e) {
       _showError("Error de autenticación: $e");
     }
-    if (mounted && didAuth) {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => RootAppFlow()));
-    } else {
+    if (!mounted || !didAuth) {
       _showError("PIN incorrecto");
       setState(() {
         _currentPin.clear();

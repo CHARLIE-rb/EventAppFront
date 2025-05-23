@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -27,6 +28,9 @@ void main() async {
         ),
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => getIt<ThemeProvider>(),
+        ),
+        ChangeNotifierProvider<EventsNotifier>(
+          create: (_) => getIt<EventsNotifier>(),
         ),
       ],
       child: const MyApp(),
