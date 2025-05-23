@@ -1,7 +1,7 @@
-import '../models/event.dart';
+import '../models/event_model.dart';
 
-final List<Event> mockEvents = [
-  Event(
+final List<EventModel> mockEvents = [
+  EventModel(
     id: 'e1',
     title: 'Kick-off reunión',
     brand: 'ACME Corp.',
@@ -17,14 +17,14 @@ final List<Event> mockEvents = [
     instructions: 'Llegar 15 min antes. Parking B.',
     ratePerHour: 25.0,
 
-    companyFeedback: FeedBack(
+    companyFeedback: FeedBackModel(
       id: '0',
       rating: 4,
       comment: 'El evento fue muy productivo y bien organizado.',
       timestamp: DateTime(2025, 5, 20, 13, 0),
     ),
     employeeFeedbacks: [
-      FeedBack(
+      FeedBackModel(
         id: 'u1',
         rating: 5,
         comment: 'Me gustó mucho la dinámica',
@@ -33,7 +33,7 @@ final List<Event> mockEvents = [
     ],
   ),
 
-  Event(
+  EventModel(
     id: 'e2',
     title: 'Workshop Flutter',
     brand: 'DevStudios',

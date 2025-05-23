@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/config/app_constants.dart';
+import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
 import 'package:flutterv1/features/auth/presentation/pages/root_app_flow.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
 import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
+import 'package:flutterv1/shared/widgets/mini/invierte_imagen_black_and_white.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +41,16 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
     if (mounted && didAuth) {
       Navigator.of(
         context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => RootAppFlow()));
+        // ).pushReplacement(MaterialPageRoute(builder: (_) => RootAppFlow()));
+      ).pushReplacement(
+        MaterialPageRoute(
+          builder:
+              (_) => ChangeNotifierProvider(
+                create: (_) => getIt<EventsNotifier>(),
+                child: RootAppFlow(),
+              ),
+        ),
+      );
     }
   }
 
@@ -130,7 +142,6 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
     final theme = Theme.of(context);
     User? user = context.read<AuthProvider>().user;
     String userName = user?.name ?? "Jhon";
-    String userLastName = user?.lastName ?? "Doe";
 
     return Scaffold(
       // 1) AppBar transparente arriba
@@ -156,7 +167,15 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
         child: Column(
           children: [
             SizedBox(height: 24),
-            CircleAvatar(child: Text(userName[0] + userLastName[0])),
+            CircleAvatar(
+              child: InvierteImagenBnW(
+                theme: theme,
+                imagePath:
+                    AppConstants
+                        .LOGO_PATH, //Aqui debería ir el logo de la empresa
+                width: 50,
+              ),
+            ),
             SizedBox(height: 12),
             Text("Welcome back, $userName", style: theme.textTheme.titleLarge),
             SizedBox(height: 24),

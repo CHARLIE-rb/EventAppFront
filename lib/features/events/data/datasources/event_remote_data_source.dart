@@ -1,39 +1,28 @@
-import 'package:flutterv1/features/auth/domain/entities/user.dart';
-import 'package:flutterv1/features/events/data/models/event.dart';
+import 'package:flutterv1/features/events/data/datasources/event_data_source.dart';
+import 'package:flutterv1/features/events/data/models/event_model.dart';
 
-abstract class EventRemoteDataSource {
-  List<Event> get allEvents;
-  User get currentUser;
-  List<Event> get visibleEvents;
-  DateTime get firstAllowedDay;
-  DateTime get lastAllowedDay;
-  double totalPayFor(Event e);
-}
-
-class EventRemoteDataSourceImpl implements EventRemoteDataSource {
+class EventRemoteDataSourceImpl implements EventDataSource {
   @override
   // TODO: implement allEvents
-  List<Event> get allEvents => throw UnimplementedError();
+  Future<List<EventModel>> get allEvents => throw UnimplementedError();
 
   @override
-  // TODO: implement currentUser
-  User get currentUser => throw UnimplementedError();
-
-  @override
-  // TODO: implement firstAllowedDay
-  DateTime get firstAllowedDay => throw UnimplementedError();
-
-  @override
-  // TODO: implement lastAllowedDay
-  DateTime get lastAllowedDay => throw UnimplementedError();
-
-  @override
-  double totalPayFor(Event e) {
-    // TODO: implement totalPayFor
+  Future<List<EventModel>> eventsByIds(List<String> ids) {
+    // TODO: implement eventsByIds
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement visibleEvents
-  List<Event> get visibleEvents => throw UnimplementedError();
+  // TODO: implement firstEverEvent
+  Future<DateTime> get firstEverEvent => throw UnimplementedError();
+
+  @override
+  Future<EventModel> getEventById(String id) {
+    // TODO: implement getEventById
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement lastEvent
+  Future<DateTime> get lastEvent => throw UnimplementedError();
 }

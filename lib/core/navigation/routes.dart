@@ -1,9 +1,8 @@
 // lib/src/routes.dart
 import 'package:flutter/material.dart';
-
+import 'package:flutterv1/features/auth/presentation/pages/forgot_password.dart';
 import 'package:flutterv1/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutterv1/features/auth/presentation/pages/register_screen.dart';
-import 'package:flutterv1/features/auth/presentation/pages/forgot_password.dart';
 import 'package:flutterv1/features/auth/presentation/pages/root_app_flow.dart';
 import 'package:flutterv1/features/auth/presentation/pages/root_screen.dart';
 

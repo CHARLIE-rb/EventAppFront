@@ -4,11 +4,10 @@ import 'package:flutterv1/config/app_constants.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/shared/widgets/mini/invierte_imagen_black_and_white.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key, required this.authProvider});
-
-  final AuthProvider authProvider;
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -59,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       pin: _pinCtrl.text,
       role: _selectedRole!,
     );
-    widget.authProvider.register(newUser);
+    context.read<AuthProvider>().register(newUser);
   }
 
   @override

@@ -25,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  User? getCurrentUser() => _current;
+  User? get currentUser => _current;
 
   @override
   Future<void> logout() async {

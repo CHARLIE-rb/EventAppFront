@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/data/datasources/images_alignment_list.dart';
+import 'package:flutterv1/features/events/data/datasources/forWidgets/images_alignment_list.dart';
 import 'package:flutterv1/features/events/presentation/widgets/expandible_item.dart';
 import 'package:flutterv1/shared/widgets/expandable_item.dart';
 import 'package:flutterv1/shared/widgets/mini/listado_puntos.dart';
@@ -10,7 +10,7 @@ final List<ExpandableItem> employeeExpandibleItemsList = [
     icon: Icons.checkroom,
     body: ExpandibleItem(
       itemsWithAlign: imagesPlusAlignments,
-      itemsWithAlignNames: imagesPlusAlignmentsNames, // List<String>
+      itemsWithAlignNames: clothesNames, // List<String>
     ),
   ),
   ExpandableItem(

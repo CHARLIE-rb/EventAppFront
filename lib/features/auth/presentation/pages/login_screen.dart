@@ -18,15 +18,26 @@ class _LoginScreenState extends State<LoginScreen> {
   String _emailOrUsername = '';
   String _password = '';
   String? _error;
+  bool _isLoading = false; // ← nuevo
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final auth =
+        context.watch<AuthProvider>(); // ← para leer error si lo expone
 
     return Scaffold(
       backgroundColor: theme.colorScheme.onPrimary,
       appBar: AppBar(
+        title: Text(
+          'Login',
+          style: theme.textTheme.headlineLarge?.copyWith(
+            color: theme.colorScheme.onPrimary,
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
@@ -98,14 +109,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         onSaved: (v) => _password = v!.trim(),
                       ),
-                      if (_error != null) ...[
+
+                      // Mostramos tanto el error local como el del provider
+                      if (_error != null || auth.errorMessage != null) ...[
                         const SizedBox(height: 8),
                         Text(
-                          _error!,
+                          _error ?? auth.errorMessage!,
                           style: const TextStyle(color: Colors.red),
                         ),
                       ],
                       const SizedBox(height: 16),
+
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
@@ -118,58 +132,52 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      // ElevatedButton.icon(
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor:
-                      //         Theme.of(context).colorScheme.primary,
-                      //     foregroundColor:
-                      //         Theme.of(context).colorScheme.onPrimary,
-                      //     shape: const StadiumBorder(),
-                      //     elevation: 0,
-                      //   ),
-                      //   onPressed: _submit,
-                      //   icon: const Icon(Icons.login),
-                      //   label: Container(
-                      //     alignment: Alignment.center,
-                      //     width: 150,
-                      //     height: 35,
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.red,
-                      //       borderRadius: BorderRadius.circular(25),
-                      //     ),
-                      //     child: Text(
-                      //       'Sign In',
-                      //       style: theme.textTheme.labelLarge,
-                      //     ),
-                      //   ),
-                      // ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.primary,
-                          foregroundColor: theme.colorScheme.onPrimary,
-                          shape: const StadiumBorder(),
-                          elevation: 0,
-                        ),
-                        onPressed: _submit,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          spacing: 10,
-                          children: [
-                            const Icon(Icons.login),
-                            Text(
-                              'Sign In',
-                              style: theme.textTheme.displayLarge?.copyWith(
-                                color: theme.colorScheme.surface,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+
+                      // Botón que cambia a loading cuando _isLoading == true
+                      SizedBox(
+                        width: double.infinity,
+                        height: 45,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: theme.colorScheme.onPrimary,
+                            shape: const StadiumBorder(),
+                            elevation: 0,
+                          ),
+                          onPressed: _isLoading ? null : _submit,
+                          child:
+                              _isLoading
+                                  ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation(
+                                        Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                  : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(Icons.login),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'Sign In',
+                                        style: theme.textTheme.displayLarge
+                                            ?.copyWith(
+                                              color: theme.colorScheme.surface,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                         ),
                       ),
                       const SizedBox(height: 24),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -201,25 +209,47 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _submit() {
-    setState(() => _error = null);
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      final ok = context.read<AuthProvider>().loginMail(
+  // Ahora la función es async, maneja loading y captura errores
+  Future<void> _submit() async {
+    setState(() {
+      _error = null;
+    });
+
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
+
+    setState(() => _isLoading = true);
+    try {
+      final ok = await context.read<AuthProvider>().loginMail(
         _emailOrUsername,
         _password,
       );
+
       if (ok) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.home,
-          (route) => false,
-        );
+        // Si loginMail devuelve true, navegamos al home
+        if (mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoutes.home,
+            (route) => false,
+          );
+        }
       } else {
+        // Si devuelve false, mostramos el error desde el provider o uno genérico
         setState(() {
-          _error = 'Credenciales inválidas';
-          _password = '';
+          _error =
+              context.read<AuthProvider>().errorMessage ??
+              'Credenciales inválidas';
         });
+      }
+    } catch (e) {
+      // Captura cualquier excepción inesperada
+      setState(() {
+        _error = 'Ha ocurrido un error: ${e.toString()}';
+      });
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
       }
     }
   }

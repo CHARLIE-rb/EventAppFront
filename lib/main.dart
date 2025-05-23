@@ -5,7 +5,7 @@ import 'package:flutterv1/features/navigation/presentation/providers/nav_notifie
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'core/di.dart'; // <<-- importa tu di
+import 'core/inyeccion_dependencias/di.dart'; // <<-- importa tu di
 import 'core/navigation/routes.dart';
 import 'shared/themes/app_theme_style.dart'; // <<-- donde esté tu AppTheme
 
@@ -53,8 +53,8 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProv.mode,
       initialRoute: AppRoutes.root,
-      routes: AppRoutes.routes,
-      onUnknownRoute: AppRoutes.onUnknownRoute,
+      // routes: AppRoutes.routes,
+      // onUnknownRoute: AppRoutes.onUnknownRoute,
     );
   }
 }

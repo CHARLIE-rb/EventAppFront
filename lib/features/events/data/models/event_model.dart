@@ -1,10 +1,10 @@
-class FeedBack {
+class FeedBackModel {
   final String id;
   final int rating; // 1–5
   final String comment; // puede estar vacío
   final DateTime timestamp; // cuándo se dejó
 
-  FeedBack({
+  FeedBackModel({
     required this.id,
     required this.rating,
     this.comment = '',
@@ -12,7 +12,7 @@ class FeedBack {
   });
 }
 
-class Event {
+class EventModel {
   final String id;
   final String title;
   final String brand;
@@ -28,10 +28,10 @@ class Event {
   final String instructions;
   final double ratePerHour;
 
-  final List<FeedBack> employeeFeedbacks;
-  final FeedBack? companyFeedback;
+  final List<FeedBackModel> employeeFeedbacks;
+  final FeedBackModel? companyFeedback;
 
-  Event({
+  EventModel({
     required this.id,
     required this.title,
     required this.brand,

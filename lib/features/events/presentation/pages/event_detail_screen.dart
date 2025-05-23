@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
-import 'package:flutterv1/features/events/data/datasources/event_service.dart';
-import 'package:flutterv1/features/events/data/models/event.dart';
+import 'package:flutterv1/features/events/data/models/event_model.dart';
 import 'package:flutterv1/features/events/presentation/widgets/details_card.dart';
 import 'package:flutterv1/features/events/presentation/widgets/expandible_items_list.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailScreen extends StatefulWidget {
-  final Event event;
   const EventDetailScreen({super.key, required this.event});
+
+  final EventModel event;
 
   @override
   State<EventDetailScreen> createState() => _EventDetailScreenState();
 }
 
 class _EventDetailScreenState extends State<EventDetailScreen> {
-  final _svc = EventService();
+  // final _svc = EventService();
 
   double? _myRating;
   String? _myComment;
@@ -31,7 +31,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
       i++;
     }
     if (i < widget.event.employeeFeedbacks.length) {
-      FeedBack existing = widget.event.employeeFeedbacks[i];
+      FeedBackModel existing = widget.event.employeeFeedbacks[i];
       _myRating = existing.rating.toDouble();
       _myComment = existing.comment;
       _submitted = true;
@@ -107,7 +107,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                           ? () {
                             setState(() {
                               widget.event.employeeFeedbacks.add(
-                                FeedBack(
+                                FeedBackModel(
                                   id: _svc.currentUser.id,
                                   rating: _myRating!.toInt(),
                                   comment: _myComment ?? '',

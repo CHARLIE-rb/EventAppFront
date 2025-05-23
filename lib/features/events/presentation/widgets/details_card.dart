@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/data/models/event.dart';
+import 'package:flutterv1/features/events/data/models/event_model.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsCard extends StatelessWidget {
   const DetailsCard({super.key, required this.event, required this.theme});
 
-  final Event event;
+  final EventModel event;
   final ThemeData theme;
 
   Future<void> _openMap(double lat, double lng, String label) async {

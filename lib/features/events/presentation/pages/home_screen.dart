@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _svc = EventService();
+  // final _svc = EventService();
   late DateTime _focusedDay;
 
   @override

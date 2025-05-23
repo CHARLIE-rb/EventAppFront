@@ -1,30 +1,9 @@
 import 'package:flutterv1/features/auth/data/datasources/auth_data_source.dart';
+import 'package:flutterv1/features/auth/data/datasources/auth_local_data_list.dart';
 import 'package:flutterv1/features/auth/data/models/user_model.dart';
-import 'package:flutterv1/features/auth/domain/entities/user.dart';
 
 class AuthLocalDataSourceImpl implements AuthDataSource {
-  final _mock = <UserModel>[
-    UserModel(
-      id: 'u1',
-      companyId: 1,
-      name: 'Ana',
-      lastName: 'Gonzalez',
-      email: 'ana@ej.com',
-      password: '1234',
-      pin: '0000',
-      role: Role.employee,
-    ),
-    UserModel(
-      id: 'u2',
-      companyId: 1,
-      name: 'Pedro',
-      lastName: 'Lopez',
-      email: 'pedro@ej.com',
-      password: 'abcd',
-      pin: '1111',
-      role: Role.manager,
-    ),
-  ];
+  final List<UserModel> _mock = mockUserModel;
 
   @override
   Future<UserModel> loginWithEmail(String email, String password) async {

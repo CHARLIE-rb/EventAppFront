@@ -1,13 +1,13 @@
 // lib/widgets/events_calendar.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/data/models/event.dart';
+import 'package:flutterv1/features/events/data/models/event_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomEventsCalendar extends StatelessWidget {
   final DateTime focusedDay;
   final DateTime firstDay;
   final DateTime lastDay;
-  final List<Event> events;
+  final List<EventModel> events;
   final ValueChanged<DateTime> onDaySelected;
 
   const CustomEventsCalendar({
@@ -22,7 +22,7 @@ class CustomEventsCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return TableCalendar<Event>(
+    return TableCalendar<EventModel>(
       firstDay: firstDay,
       lastDay: lastDay,
       focusedDay: focusedDay,

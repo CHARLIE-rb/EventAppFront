@@ -12,7 +12,9 @@ class AuthProvider extends ChangeNotifier {
   final GetCurrentUser _getUser;
   final RegisterUser _registerUser;
   final Logout _logout;
+  String? _errorMessage;
 
+  String? get errorMessage => _errorMessage;
   User? get user => _getUser();
   bool get isLoggedIn => user != null;
 
@@ -26,22 +28,26 @@ class AuthProvider extends ChangeNotifier {
 
   Future<bool> loginMail(String email, String pass) async {
     try {
+      _errorMessage = null;
       await _loginEmail(email, pass);
       final ok = user != null;
       if (ok) notifyListeners();
       return ok;
-    } catch (_) {
+    } catch (e) {
+      _errorMessage = e.toString();
       return false;
     }
   }
 
   Future<bool> loginPin(String pin) async {
     try {
+      _errorMessage = null;
       await _loginPin(user!.id, pin);
       final ok = user != null;
       if (ok) notifyListeners();
       return ok;
-    } catch (_) {
+    } catch (e) {
+      _errorMessage = e.toString();
       return false;
     }
   }
