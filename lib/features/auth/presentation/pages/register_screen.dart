@@ -6,7 +6,9 @@ import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dar
 import 'package:flutterv1/shared/widgets/mini/invierte_imagen_black_and_white.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({super.key, required this.authProvider});
+
+  final AuthProvider authProvider;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -14,8 +16,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  final authProvider = AuthProvider();
 
   // Controllers para cada campo
   final _companyIdCtrl = TextEditingController();
@@ -59,8 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       pin: _pinCtrl.text,
       role: _selectedRole!,
     );
-
-    authProvider.register(newUser);
+    widget.authProvider.register(newUser);
   }
 
   @override

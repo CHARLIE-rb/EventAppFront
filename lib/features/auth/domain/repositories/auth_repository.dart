@@ -3,7 +3,9 @@
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository {
+  User? getCurrentUser();
   Future<User> loginWithEmail(String email, String password);
   Future<User> loginWithPin(String id, String pin);
-  User? getCurrentUser();
+  Future<User> register(User user);
+  Future<void> logout();
 }

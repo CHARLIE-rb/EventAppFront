@@ -1,36 +1,43 @@
-// lib/features/auth/data/repositories/auth_repository_impl.dart
-
+import 'package:flutterv1/features/auth/data/datasources/auth_data_source.dart';
+import 'package:flutterv1/features/auth/data/mappers/user_mapper.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
 import 'package:flutterv1/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutterv1/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:flutterv1/features/auth/data/datasources/auth_local_data_source.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource _remote;
-  final AuthLocalDataSource _local;
+  final AuthDataSource _authDataSource;
+  final UserMapper _userMapper;
   User? _current;
 
-  AuthRepositoryImpl(this._remote, this._local);
+  AuthRepositoryImpl(this._authDataSource, this._userMapper);
 
   @override
   Future<User> loginWithEmail(String email, String password) async {
-    try {
-      final model = await _remote.loginWithEmail(email, password);
-      _current = model.toDomain();
-    } catch (_) {
-      final model = await _local.loginWithEmail(email, password);
-      _current = model.toDomain();
-    }
+    final model = await _authDataSource.loginWithEmail(email, password);
+    _current = _userMapper.toUser(model);
     return _current!;
   }
 
   @override
   Future<User> loginWithPin(String id, String pin) async {
-    final model = await _local.loginWithPin(id, pin);
-    _current = model.toDomain();
+    final model = await _authDataSource.loginWithPin(id, pin);
+    _current = _userMapper.toUser(model);
     return _current!;
   }
 
   @override
   User? getCurrentUser() => _current;
+
+  @override
+  Future<void> logout() async {
+    _current = null;
+  }
+
+  @override
+  Future<User> register(User user) {
+    final model = _authDataSource.register(_userMapper.toModel(user));
+    return model.then((value) {
+      _current = _userMapper.toUser(value);
+      return _current!;
+    });
+  }
 }

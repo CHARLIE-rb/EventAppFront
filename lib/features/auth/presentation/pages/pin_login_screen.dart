@@ -57,9 +57,14 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
     });
   }
 
-  void _verifyPin() {
+  void _verifyPin() async {
     final entered = _currentPin.join();
-    if (context.read<AuthProvider>().loginPin(entered)) {
+    try {
+      didAuth = await context.read<AuthProvider>().loginPin(entered);
+    } catch (e) {
+      _showError("Error de autenticación: $e");
+    }
+    if (mounted && didAuth) {
       Navigator.of(
         context,
       ).pushReplacement(MaterialPageRoute(builder: (_) => RootAppFlow()));
