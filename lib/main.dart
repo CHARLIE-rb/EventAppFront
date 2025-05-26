@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
+import 'package:flutterv1/features/navigation/presentation/providers/nav_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -31,6 +32,10 @@ void main() async {
         ),
         ChangeNotifierProvider<EventsNotifier>(
           create: (_) => getIt<EventsNotifier>(),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, NavNotifier>(
+          create: (_) => getIt<NavNotifier>(),
+          update: (_, auth, nav) => nav!,
         ),
       ],
       child: const MyApp(),
