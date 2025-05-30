@@ -77,7 +77,7 @@ class AppTheme {
     ),
 
     // 7) Cards sin sombra y con bordes redondeados suaves
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Colors.white,
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -152,7 +152,7 @@ class AppTheme {
       bodyMedium: TextStyle(color: Colors.white, fontSize: 14),
     ),
 
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: const Color(0xFF1E1E1E),
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

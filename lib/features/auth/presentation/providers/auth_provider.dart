@@ -13,13 +13,13 @@ class AuthProvider extends ChangeNotifier {
   final GetCurrentUser _getUser;
   final RegisterUser _registerUser;
   final Logout _logout;
-  AuthStatus _authStatus = AuthStatus.uninitialized;
+  AuthStatus? _authStatus;
 
   String? _errorMessage;
 
   String? get errorMessage => _errorMessage;
   User? get user => _getUser();
-  AuthStatus get authStatus => _authStatus;
+  AuthStatus get authStatus => _authStatus!;
 
   AuthProvider(
     this._loginEmail,
@@ -32,7 +32,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> _load() async {
-    final user = _getUser();
+    _authStatus = AuthStatus.uninitialized;
+    notifyListeners();
+    final user = this.user;
     if (user != null) {
       _authStatus = AuthStatus.pinRequired;
     } else {
@@ -46,7 +48,10 @@ class AuthProvider extends ChangeNotifier {
       _errorMessage = null;
       await _loginEmail(email, pass);
       final ok = user != null;
-      if (ok) notifyListeners();
+      if (ok) {
+        _authStatus = AuthStatus.authenticated;
+        notifyListeners();
+      }
       return ok;
     } catch (e) {
       _errorMessage = e.toString();
@@ -59,7 +64,10 @@ class AuthProvider extends ChangeNotifier {
       _errorMessage = null;
       await _loginPin(user!.id, pin);
       final ok = user != null;
-      if (ok) notifyListeners();
+      if (ok) {
+        _authStatus = AuthStatus.authenticated;
+        notifyListeners();
+      }
       return ok;
     } catch (e) {
       _errorMessage = e.toString();

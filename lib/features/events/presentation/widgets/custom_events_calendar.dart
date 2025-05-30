@@ -31,10 +31,9 @@ class CustomEventsCalendar extends StatelessWidget {
       focusedDay: focusedDay,
       calendarFormat: CalendarFormat.month,
       startingDayOfWeek: StartingDayOfWeek.monday,
-      eventLoader: (day) {
-        // Devuelve los eventos cuyo startDateTime coincide con [day]
-        return events.where((e) => isSameDay(e.startDateTime, day)).toList();
-      },
+      eventLoader:
+          (day) =>
+              events.where((e) => isSameDay(e.startDateTime, day)).toList(),
       onDaySelected: (selectedDay, focused) {
         onDaySelected(selectedDay);
       },
@@ -89,7 +88,7 @@ class CustomEventsCalendar extends StatelessWidget {
           return const SizedBox();
         },
       ),
-      headerVisible: false, // ocultamos la cabecera por separado
+      headerVisible: false,
       selectedDayPredicate: (day) => isSameDay(day, focusedDay),
     );
   }

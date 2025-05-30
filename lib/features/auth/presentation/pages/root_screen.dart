@@ -16,11 +16,11 @@ class RootScreen extends StatelessWidget {
       case AuthStatus.uninitialized:
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       case AuthStatus.unauthenticated:
-        return const LoginScreen();
+        return LoginScreen();
       case AuthStatus.pinRequired:
-        return const PinLoginScreen();
+        return PinLoginScreen();
       case AuthStatus.authenticated:
-        return const RootAppFlow();
+        return RootAppFlow();
     }
   }
 }

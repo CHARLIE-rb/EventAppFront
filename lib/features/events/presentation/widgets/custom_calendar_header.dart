@@ -28,13 +28,13 @@ class CalendarHeader extends StatelessWidget {
         IconButton(icon: const Icon(Icons.chevron_left), onPressed: onLeft),
         GestureDetector(
           onTap: () async {
-            // delegamos la apertura del DatePicker al callback
             final picked = await showDatePicker(
               context: context,
               initialDate: focusedDay,
               firstDate: firstDay,
               lastDate: lastDay,
-              initialDatePickerMode: DatePickerMode.year,
+              initialDatePickerMode: DatePickerMode.day,
+              helpText: 'Selecciona un mes',
             );
             if (picked != null) onTapMonth(picked);
           },

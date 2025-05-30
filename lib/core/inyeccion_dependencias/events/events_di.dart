@@ -13,7 +13,6 @@ import 'package:flutterv1/features/events/presentation/providers/events_notifier
 import 'package:get_it/get_it.dart';
 
 void initEventsModule(GetIt getIt) {
-  // EVENTS
   getIt.registerLazySingleton<EventDataSource>(
     () => EventLocalDataSourceImpl(),
   );

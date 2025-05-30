@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterv1/features/events/presentation/widgets/day_events_modal.dart';
 import 'package:provider/provider.dart';
 import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
-import 'package:flutterv1/features/events/presentation/pages/event_day_screen.dart';
 import 'package:flutterv1/features/events/presentation/pages/event_detail_screen.dart';
 import 'package:flutterv1/features/events/presentation/widgets/custom_calendar_header.dart';
 import 'package:flutterv1/features/events/presentation/widgets/custom_events_calendar.dart';
@@ -19,78 +19,128 @@ class _EventsScreenState extends State<EventsScreen> {
   @override
   void initState() {
     super.initState();
+
     _focusedDay = DateTime.now();
-    // No es necesario llamar load: el Notifier lo hizo al crearse.
   }
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<EventsNotifier>();
+    final eN = context.watch<EventsNotifier>();
 
-    // 1) Loader mientras se inicializa
-    if (vm.isLoading) {
+    if (eN.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    // 2) Extraigo el estado ya “resuelto”
-    final events = vm.visibleEvents;
-    final firstDay = vm.firstAllowedDay;
-    final lastDay = vm.lastAllowedDay;
+    final events = eN.visibleEvents;
+    final firstDay = eN.firstAllowedDay;
+    final lastDay = eN.lastAllowedDay;
+    final availableBrands = eN.availableBrands;
 
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          // Cabecera de calendario
           CalendarHeader(
             focusedDay: _focusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
             onLeft: () {
-              vm.goToPreviousMonth(_focusedDay);
-              setState(
-                () =>
-                    _focusedDay =
-                        vm.visibleEvents.isNotEmpty
-                            ? vm.visibleEvents.first.startDateTime
-                            : firstDay,
-              );
+              final prev = DateTime(_focusedDay.year, _focusedDay.month - 1, 1);
+              setState(() {
+                _focusedDay = prev.isBefore(firstDay) ? firstDay : prev;
+              });
             },
             onRight: () {
-              vm.goToNextMonth(_focusedDay);
-              setState(
-                () =>
-                    _focusedDay =
-                        vm.visibleEvents.isNotEmpty
-                            ? vm.visibleEvents.first.startDateTime
-                            : lastDay,
-              );
+              final next = DateTime(_focusedDay.year, _focusedDay.month + 1, 1);
+              setState(() {
+                _focusedDay = next.isAfter(lastDay) ? lastDay : next;
+              });
             },
             onTapMonth: (d) => setState(() => _focusedDay = d),
           ),
 
           const SizedBox(height: 12),
 
-          // Calendario con events
           CustomEventsCalendar(
             focusedDay: _focusedDay,
             firstDay: firstDay,
-            lastDay: lastDay,
+            lastDay: lastDay.isBefore(_focusedDay) ? _focusedDay : lastDay,
             events: events,
-            onDaySelected: (day) {
-              final dayEvents = vm.eventsForDay(day);
+            onDaySelected: (day) async {
+              // Capturamos el context antes del await para no cruzar el async gap
+              final modalContext = context;
+              final dayEvents = await eN.eventsForDay(day);
+              // Verificamos que el State siga montado
+              if (!mounted) return;
               if (dayEvents.isNotEmpty) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder:
-                        (_) => EventDayScreen(date: day, events: dayEvents),
-                  ),
+                showModalBottomSheet(
+                  context: modalContext,
+                  isScrollControlled: true,
+                  barrierColor: Colors.black54,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => DayEventsModal(date: day, events: dayEvents),
                 );
               }
             },
           ),
 
+          const SizedBox(height: 24),
+          // 2) NUEVO: filtros
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // 2.1) Filtro de tiempo
+                Wrap(
+                  spacing: 8,
+                  children:
+                      TimeFilter.values.map((tf) {
+                        final label =
+                            {
+                              TimeFilter.future: 'Futuros',
+                              TimeFilter.all: 'Todos',
+                              TimeFilter.past: 'Pasados',
+                            }[tf];
+                        final isSelected = eN.timeFilter == tf;
+                        return ChoiceChip(
+                          label: Text(label!),
+                          selected: isSelected,
+                          onSelected: (_) => eN.setTimeFilter(tf),
+                        );
+                      }).toList(),
+                ),
+
+                SizedBox(height: 12),
+
+                // 2.2) Filtro de marca
+                // FutureBuilder<List<String>>(
+                //   future: availableBrands,
+                //   builder: (context, snapshot) {
+                //     final brands = snapshot.data ?? [];
+                //     return DropdownButton<String>(
+                //       isExpanded: true,
+                //       value: eN.selectedBrand,
+                //       hint: Text('Filtrar por marca'),
+                //       items: [
+                //         const DropdownMenuItem(
+                //           value: null,
+                //           child: Text('Todas'),
+                //         ),
+                //         ...brands.map(
+                //           (marca) => DropdownMenuItem(
+                //             value: marca,
+                //             child: Text(marca),
+                //           ),
+                //         ),
+                //       ],
+                //       onChanged: (marca) => eN.setSelectedBrand(marca),
+                //     );
+                //   },
+                // ),
+              ],
+            ),
+          ),
           const SizedBox(height: 24),
 
           // Lista de eventos del mes

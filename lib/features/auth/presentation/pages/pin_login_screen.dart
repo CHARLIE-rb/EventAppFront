@@ -35,20 +35,6 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
     } catch (e) {
       _showError("Error de autenticación: $e");
     }
-    // if (mounted && didAuth) {
-    //   Navigator.of(
-    //     context,
-    //     // ).pushReplacement(MaterialPageRoute(builder: (_) => RootAppFlow()));
-    //   ).pushReplacement(
-    //     MaterialPageRoute(
-    //       builder:
-    //           (_) => ChangeNotifierProvider(
-    //             create: (_) => getIt<EventsNotifier>(),
-    //             child: RootAppFlow(),
-    //           ),
-    //     ),
-    //   );
-    // }
   }
 
   void _showError(String msg) {
@@ -134,7 +120,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     User? user = context.read<AuthProvider>().user;
-    String userName = user?.name ?? "Jhon";
+    String userName = user?.name ?? "";
 
     return Scaffold(
       // 1) AppBar transparente arriba
@@ -145,9 +131,8 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
           IconButton(
             icon: Icon(
               theme.brightness == Brightness.light
-                  ? Icons
-                      .dark_mode_outlined // si está oscuro, muestro “dark”
-                  : Icons.light_mode_outlined, // si está claro, “light”
+                  ? Icons.dark_mode_outlined
+                  : Icons.light_mode_outlined,
               color: theme.colorScheme.onSurface,
             ),
             onPressed: () => context.read<ThemeProvider>().toggle(),
@@ -163,14 +148,12 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
             CircleAvatar(
               child: InvierteImagenBnW(
                 theme: theme,
-                imagePath:
-                    AppConstants
-                        .LOGO_PATH, //Aqui debería ir el logo de la empresa
+                imagePath: AppConstants.LOGO_PATH,
                 width: 50,
               ),
             ),
             SizedBox(height: 12),
-            Text("Welcome back, $userName", style: theme.textTheme.titleLarge),
+            Text("Welcome back $userName", style: theme.textTheme.titleLarge),
             SizedBox(height: 24),
             _buildPinIndicators(theme),
             Spacer(),
@@ -200,8 +183,6 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
                         onTap: _authenticateBiometrics,
                       ),
                       _buildNumKey("0", theme),
-                      // Espacio en blanco para simetría
-                      // Expanded(child: SizedBox()),
                       _buildNumKey(
                         "",
                         theme,

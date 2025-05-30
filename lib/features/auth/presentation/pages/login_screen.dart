@@ -215,31 +215,32 @@ class _LoginScreenState extends State<LoginScreen> {
       _error = null;
     });
 
-    if (!_formKey.currentState!.validate()) return;
-    _formKey.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
-    setState(() => _isLoading = true);
-    try {
-      final ok = await context.read<AuthProvider>().loginMail(
-        _emailOrUsername,
-        _password,
-      );
+      setState(() => _isLoading = true);
+      try {
+        final ok = await context.read<AuthProvider>().loginMail(
+          _emailOrUsername,
+          _password,
+        );
 
-      if (!ok) {
+        if (!ok) {
+          setState(() {
+            _error =
+                context.read<AuthProvider>().errorMessage ??
+                'Credenciales inválidas';
+          });
+        }
+      } catch (e) {
+        // Captura cualquier excepción inesperada
         setState(() {
-          _error =
-              context.read<AuthProvider>().errorMessage ??
-              'Credenciales inválidas';
+          _error = 'Ha ocurrido un error: ${e.toString()}';
         });
-      }
-    } catch (e) {
-      // Captura cualquier excepción inesperada
-      setState(() {
-        _error = 'Ha ocurrido un error: ${e.toString()}';
-      });
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
       }
     }
   }

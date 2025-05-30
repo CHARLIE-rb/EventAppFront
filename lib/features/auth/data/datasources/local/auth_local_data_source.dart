@@ -1,5 +1,5 @@
 import 'package:flutterv1/features/auth/data/datasources/auth_data_source.dart';
-import 'package:flutterv1/features/auth/data/datasources/auth_local_data_list.dart';
+import 'package:flutterv1/features/auth/data/datasources/local/auth_local_data_list.dart';
 import 'package:flutterv1/features/auth/data/models/user_model.dart';
 
 class AuthLocalDataSourceImpl implements AuthDataSource {
