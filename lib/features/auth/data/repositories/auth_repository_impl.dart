@@ -37,6 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    await _credentialStorage.clearCredentials();
     _current = null;
   }
 

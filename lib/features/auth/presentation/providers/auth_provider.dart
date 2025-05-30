@@ -50,7 +50,7 @@ class AuthProvider extends ChangeNotifier {
       final ok = user != null;
       if (ok) {
         _authStatus = AuthStatus.authenticated;
-        notifyListeners();
+        // notifyListeners();
       }
       return ok;
     } catch (e) {

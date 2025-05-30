@@ -1,14 +1,7 @@
+import 'package:flutterv1/features/companies/data/datasources/company_data_source.dart';
 import 'package:flutterv1/features/companies/domain/entities/company.dart';
 
-abstract class CompanyRemoteDatasource {
-  Future<List<Company>> getCompanies();
-  Future<Company> getCompanyById(String id);
-  Future<Company> createCompany(Company company);
-  Future<Company> updateCompany(Company company);
-  Future<void> deleteCompany(String id);
-}
-
-class CompanyRemoteDatasourceImpl implements CompanyRemoteDatasource {
+class CompanyRemoteDatasourceImpl implements CompanyDataSource {
   @override
   Future<Company> createCompany(Company company) {
     // TODO: implement createCompany
@@ -22,7 +15,7 @@ class CompanyRemoteDatasourceImpl implements CompanyRemoteDatasource {
   }
 
   @override
-  Future<List<Company>> getCompanies() {
+  Future<List<Company>> getAllCompanies() {
     // TODO: implement getCompanies
     throw UnimplementedError();
   }

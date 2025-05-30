@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/core/navigation/routes.dart';
 import 'package:flutterv1/config/app_constants.dart';
+import 'package:flutterv1/features/auth/presentation/pages/root_screen.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
 import 'package:flutterv1/shared/widgets/mini/invierte_imagen_black_and_white.dart';
@@ -18,15 +19,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String _emailOrUsername = '';
   String _password = '';
   String? _error;
-  bool _isLoading = false; // ← nuevo
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final auth =
-        context.watch<AuthProvider>(); // ← para leer error si lo expone
-
+    final auth = context.watch<AuthProvider>();
     return Scaffold(
       backgroundColor: theme.colorScheme.onPrimary,
       appBar: AppBar(
@@ -110,7 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         onSaved: (v) => _password = v!.trim(),
                       ),
 
-                      // Mostramos tanto el error local como el del provider
                       if (_error != null || auth.errorMessage != null) ...[
                         const SizedBox(height: 8),
                         Text(
@@ -209,8 +207,13 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Ahora la función es async, maneja loading y captura errores
   Future<void> _submit() async {
+    final navigator = Navigator.of(context);
+
+    await _subSubmit(navigator);
+  }
+
+  Future<void> _subSubmit(NavigatorState navigator) async {
     setState(() {
       _error = null;
     });
@@ -231,6 +234,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 context.read<AuthProvider>().errorMessage ??
                 'Credenciales inválidas';
           });
+        } else {
+          navigator.pushReplacement(
+            MaterialPageRoute(builder: (_) => const RootScreen()),
+          );
         }
       } catch (e) {
         // Captura cualquier excepción inesperada

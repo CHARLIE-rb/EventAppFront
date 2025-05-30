@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterv1/features/companies/data/datasources/company_data_source.dart';
 import 'package:flutterv1/features/companies/domain/entities/company.dart';
 
-abstract class CompanyLocalDataSource {
-  Future<List<Company>> getAllCompanies();
-  Future<void> deleteCompany(String companyId);
-  Future<void> updateCompany(Company company);
-}
-
-class CompanyLocalDataSourceImpl implements CompanyLocalDataSource {
+class CompanyLocalDataSourceImpl implements CompanyDataSource {
   static final List<Company> _mockCompanies = [
     Company(
       id: 1,
@@ -33,8 +28,20 @@ class CompanyLocalDataSourceImpl implements CompanyLocalDataSource {
   }
 
   @override
-  Future<void> updateCompany(Company company) async {
+  Future<Company> updateCompany(Company company) async {
     // Simulate a delay for updating a company
-    await Future.delayed(const Duration(seconds: 1));
+    return await Future.delayed(const Duration(seconds: 1));
+  }
+
+  @override
+  Future<Company> createCompany(Company company) {
+    // TODO: implement createCompany
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Company> getCompanyById(String id) {
+    // TODO: implement getCompanyById
+    throw UnimplementedError();
   }
 }

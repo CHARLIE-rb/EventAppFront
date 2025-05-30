@@ -1,4 +1,4 @@
-// lib/core/inyeccion_dependencias/auth_di.dart
+// lib/core/inyeccion_dependencias/auth/auth_di.dart
 
 import 'package:get_it/get_it.dart';
 
@@ -17,16 +17,20 @@ import 'package:flutterv1/features/auth/domain/usecases/register_user.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 
 void initAuthModule(GetIt getIt) {
+  // 1) DataSource: síncrono, no cambia
   getIt.registerLazySingleton<AuthDataSource>(() => AuthLocalDataSourceImpl());
 
+  // 2) CredentialStorage: ASÍNCRONO. GetIt esperará a que esto termine
   getIt.registerSingletonAsync<CredentialStorage>(() async {
     final storage = LocalCredentialStorage();
-    await storage.init();
+    await storage.init(); // <- aquí SharedPreferences.getInstance()
     return storage;
   });
 
+  // 3) Mapper: síncrono
   getIt.registerLazySingleton<UserMapper>(() => UserMapperImpl());
 
+  // 4) AuthRepository: también ASÍNCRONO, DEPENDE de CredentialStorage
   getIt.registerSingletonAsync<AuthRepository>(() async {
     final storage = await getIt.getAsync<CredentialStorage>();
     final repo = AuthRepositoryImpl(
@@ -34,16 +38,27 @@ void initAuthModule(GetIt getIt) {
       getIt<UserMapper>(),
       storage,
     );
-    await repo.loadCredentials();
+    await repo.loadCredentials(); // <- auto-login aquí
     return repo;
   }, dependsOn: [CredentialStorage]);
 
-  getIt.registerLazySingleton(() => LoginWithEmail(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => LoginWithPin(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => GetCurrentUser(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => RegisterUser(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => Logout(getIt<AuthRepository>()));
+  // 5) Ahora que AuthRepository se marca “ready” solo tras ejecutar loadCredentials(),
+  //    los use-cases pueden resolverse en caliente sin errores:
+  getIt.registerLazySingleton<LoginWithEmail>(
+    () => LoginWithEmail(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<LoginWithPin>(
+    () => LoginWithPin(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<GetCurrentUser>(
+    () => GetCurrentUser(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<RegisterUser>(
+    () => RegisterUser(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<Logout>(() => Logout(getIt<AuthRepository>()));
 
+  // 6) Finalmente, el AuthProvider puede pedir todos esos use-cases
   getIt.registerFactory<AuthProvider>(
     () => AuthProvider(
       getIt<LoginWithEmail>(),

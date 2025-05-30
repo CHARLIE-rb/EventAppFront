@@ -1,13 +1,11 @@
-// lib/src/routes.dart
 import 'package:flutter/material.dart';
 import 'package:flutterv1/features/auth/presentation/pages/forgot_password.dart';
 import 'package:flutterv1/features/auth/presentation/pages/login_screen.dart';
 import 'package:flutterv1/features/auth/presentation/pages/register_screen.dart';
-import 'package:flutterv1/features/auth/presentation/pages/root_screen.dart';
 
 class AppRoutes {
   // 1. Definición de nombres de ruta como constantes
-  static const String root = '/';
+  // static const String root = '/';
   static const String login = '/login';
   static const String signup = '/signup';
   static const String recover = '/recover';
@@ -15,7 +13,7 @@ class AppRoutes {
 
   // 2. Mapa de rutas
   static final Map<String, WidgetBuilder> routes = {
-    root: (BuildContext ctx) => const RootScreen(),
+    // root: (BuildContext ctx) => const RootScreen(),
     login: (BuildContext ctx) => const LoginScreen(),
     signup: (BuildContext ctx) => const RegisterScreen(),
     recover: (BuildContext ctx) => const ForgotPassword(),

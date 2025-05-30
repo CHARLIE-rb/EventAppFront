@@ -1,9 +1,9 @@
-import 'package:flutterv1/features/companies/data/datasources/company_remote_datasource.dart';
+import 'package:flutterv1/features/companies/data/datasources/company_data_source.dart';
 import 'package:flutterv1/features/companies/domain/entities/company.dart';
 import 'package:flutterv1/features/companies/domain/repositories/company_repository.dart';
 
 class CompanyRepositorieImpl implements CompanyRepository {
-  final CompanyRemoteDatasource companyRemoteDatasource;
+  final CompanyDataSource companyRemoteDatasource;
 
   CompanyRepositorieImpl(this.companyRemoteDatasource);
 

@@ -1,5 +1,6 @@
 import 'package:flutterv1/core/inyeccion_dependencias/auth/auth_di.dart';
 import 'package:flutterv1/core/inyeccion_dependencias/events/events_di.dart';
+import 'package:flutterv1/features/companies/data/datasources/company_data_source.dart';
 import 'package:flutterv1/features/companies/data/datasources/company_local_data_source.dart';
 import 'package:flutterv1/features/companies/data/datasources/company_remote_datasource.dart';
 import 'package:flutterv1/features/companies/domain/usecases/delete_company.dart';
@@ -17,7 +18,7 @@ import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dar
 // (Aquí podrías añadir repos, datasources, usecases, etc.)
 final GetIt getIt = GetIt.instance;
 
-void init() {
+void initDI() {
   getIt.registerFactory(() => ThemeProvider());
 
   initAuthModule(getIt);
@@ -27,11 +28,8 @@ void init() {
   getIt.registerFactory(() => NavNotifier(getIt(), getIt<AuthProvider>()));
 
   // COMPANIES
-  getIt.registerLazySingleton<CompanyLocalDataSource>(
+  getIt.registerLazySingleton<CompanyDataSource>(
     () => CompanyLocalDataSourceImpl(),
-  );
-  getIt.registerLazySingleton<CompanyRemoteDatasource>(
-    () => CompanyRemoteDatasourceImpl(),
   );
   getIt.registerLazySingleton(() => GetAllCompanies(getIt()));
   getIt.registerLazySingleton(() => DeleteCompany(getIt()));

@@ -61,7 +61,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   const SizedBox(height: 10, width: 10),
                   TextButton.icon(
                     onPressed: (() {
-                      Navigator.pushNamed(context, AppRoutes.login);
+                      Navigator.pop(context);
                     }),
                     icon: const Icon(Icons.home, size: 28),
                     label: Container(
