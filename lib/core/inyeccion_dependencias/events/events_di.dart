@@ -1,3 +1,4 @@
+import 'package:flutterv1/core/inyeccion_dependencias/events/events_widgets_di.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/features/events/data/datasources/event_data_source.dart';
 import 'package:flutterv1/features/events/data/datasources/events_local_data_source.dart';
@@ -37,4 +38,6 @@ void initEventsModule(GetIt getIt) {
   getIt.registerFactoryParam<CommentsNotifier, Event, void>(
     (event, _) => CommentsNotifier(event, getIt<AuthProvider>().user!),
   );
+
+  initEventsWidgetsModule(getIt);
 }
