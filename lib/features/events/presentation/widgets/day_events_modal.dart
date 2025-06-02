@@ -55,7 +55,7 @@ class DayEventsModal extends StatelessWidget {
                         ' (€${(e.ratePerHour * duration).toStringAsFixed(2)})',
                       ),
                       onTap: () {
-                        navigator.pop(); // Cierra el diálogo
+                        // navigator.pop(); // Cierra el diálogo
                         navigator.push(
                           MaterialPageRoute(
                             builder: (_) => EventDetailScreen(event: e),

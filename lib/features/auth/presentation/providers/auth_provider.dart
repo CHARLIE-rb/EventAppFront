@@ -50,7 +50,7 @@ class AuthProvider extends ChangeNotifier {
       final ok = user != null;
       if (ok) {
         _authStatus = AuthStatus.authenticated;
-        // notifyListeners();
+        notifyListeners();
       }
       return ok;
     } catch (e) {
@@ -77,10 +77,13 @@ class AuthProvider extends ChangeNotifier {
 
   void logout() {
     _logout();
+    _authStatus = AuthStatus.unauthenticated;
     notifyListeners();
   }
 
   void register(User u) {
     _registerUser(u);
+    _authStatus = AuthStatus.unauthenticated;
+    notifyListeners();
   }
 }

@@ -208,6 +208,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
+    print('submito');
+
     final navigator = Navigator.of(context);
 
     await _subSubmit(navigator);
@@ -217,7 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _error = null;
     });
-
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -234,10 +235,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 context.read<AuthProvider>().errorMessage ??
                 'Credenciales inválidas';
           });
-        } else {
-          navigator.pushReplacement(
-            MaterialPageRoute(builder: (_) => const RootScreen()),
-          );
         }
       } catch (e) {
         // Captura cualquier excepción inesperada

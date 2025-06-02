@@ -12,6 +12,7 @@ class RootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final status = context.watch<AuthProvider>().authStatus;
+
     switch (status) {
       case AuthStatus.uninitialized:
         return const Scaffold(body: Center(child: CircularProgressIndicator()));

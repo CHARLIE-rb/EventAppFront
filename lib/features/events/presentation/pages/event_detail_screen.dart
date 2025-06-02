@@ -1,13 +1,10 @@
-// lib/features/events/presentation/pages/event_detail_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
-import 'package:flutterv1/features/auth/domain/entities/user.dart';
+import 'package:flutterv1/features/events/presentation/widgets/details_card.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/features/events/domain/entities/event.dart';
 import '../providers/comments_notifier.dart';
 
@@ -17,18 +14,16 @@ class EventDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.read<AuthProvider>();
     return ChangeNotifierProvider<CommentsNotifier>(
       create: (_) => getIt<CommentsNotifier>(param1: event),
-      child: _EventDetailBody(event: event, currentUser: auth.user!),
+      child: _EventDetailBody(event: event),
     );
   }
 }
 
 class _EventDetailBody extends StatefulWidget {
   final Event event;
-  final User currentUser;
-  const _EventDetailBody({required this.event, required this.currentUser});
+  const _EventDetailBody({required this.event});
   @override
   State<_EventDetailBody> createState() => _EventDetailBodyState();
 }
@@ -64,81 +59,90 @@ class _EventDetailBodyState extends State<_EventDetailBody> {
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.event.title)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // — Detalles básicos (igual que antes) —
-            Text(widget.event.brand, style: theme.textTheme.headlineSmall),
-            const SizedBox(height: 12),
+      body: Column(
+        children: [
+          // — Detalles básicos (igual que antes) —
+          Text(widget.event.brand, style: theme.textTheme.headlineSmall),
+          const SizedBox(height: 12),
+          DetailsCard(event: widget.event, theme: theme),
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // aquí tu DetailsCard y ExpandibleItemsList…
+                // const SizedBox(height: 24),
 
-            // aquí tu DetailsCard y ExpandibleItemsList…
-            const SizedBox(height: 24),
+                // — SECCIÓN DE FEEDBACK —
+                if (vm.isManager) ...[
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => _EmployeeCommentsDialog(),
+                      );
+                    },
+                    child: const Text('Ver feedback de empleados'),
+                  ),
+                ] else if ((vm.isEmployee || vm.isCompany) &&
+                    vm.isPastEvent &&
+                    vm.within48h) ...[
+                  Text('Tu feedback', style: theme.textTheme.titleMedium),
+                  const SizedBox(height: 8),
+                  RatingBar.builder(
+                    initialRating: _rating ?? 0,
+                    minRating: 0.5,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 32,
+                    itemBuilder:
+                        (_, __) => const Icon(Icons.star, color: Colors.amber),
+                    onRatingUpdate: (r) => setState(() => _rating = r),
+                  ),
+                  TextField(
+                    controller: TextEditingController(text: _comment),
+                    decoration: const InputDecoration(
+                      labelText: 'Comentario (opcional)',
+                    ),
+                    onChanged: (t) => _comment = t,
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed:
+                        (_rating != null) && !vm.isLoading
+                            ? () => vm.submitFeedback(
+                              rating: _rating!.toInt(),
+                              comment: _comment,
+                            )
+                            : null,
+                    child:
+                        vm.isLoading
+                            ? const CircularProgressIndicator()
+                            : Text(
+                              vm.myFeedback == null ? 'Enviar' : 'Actualizar',
+                            ),
+                  ),
+                ],
 
-            // — SECCIÓN DE FEEDBACK —
-            if (vm.isManager) ...[
-              ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) => _EmployeeCommentsDialog(),
-                  );
-                },
-                child: const Text('Ver feedback de empleados'),
-              ),
-            ] else if ((vm.isEmployee || vm.isCompany) &&
-                vm.isPastEvent &&
-                vm.within48h) ...[
-              Text('Tu feedback', style: theme.textTheme.titleMedium),
-              const SizedBox(height: 8),
-              RatingBar.builder(
-                initialRating: _rating ?? 0,
-                minRating: 0.5,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemSize: 32,
-                itemBuilder:
-                    (_, __) => const Icon(Icons.star, color: Colors.amber),
-                onRatingUpdate: (r) => setState(() => _rating = r),
-              ),
-              TextField(
-                controller: TextEditingController(text: _comment),
-                decoration: const InputDecoration(
-                  labelText: 'Comentario (opcional)',
-                ),
-                onChanged: (t) => _comment = t,
-              ),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed:
-                    (_rating != null) && !vm.isLoading
-                        ? () => vm.submitFeedback(
-                          rating: _rating!.toInt(),
-                          comment: _comment,
-                        )
-                        : null,
-                child:
-                    vm.isLoading
-                        ? const CircularProgressIndicator()
-                        : Text(vm.myFeedback == null ? 'Enviar' : 'Actualizar'),
-              ),
-            ],
-
-            // — Feedback fijo tras 48h —
-            if (vm.isPastEvent && !vm.within48h) ...[
-              const Divider(),
-              if (widget.event.companyFeedback != null) ...[
-                Text('Feedback empresa', style: theme.textTheme.titleMedium),
-                ListTile(
-                  leading: const Icon(Icons.business),
-                  title: Text('${widget.event.companyFeedback!.rating}/5'),
-                  subtitle: Text(widget.event.companyFeedback!.comment),
-                ),
+                // — Feedback fijo tras 48h —
+                if (vm.isPastEvent && !vm.within48h) ...[
+                  const Divider(),
+                  if (widget.event.companyFeedback != null) ...[
+                    Text(
+                      'Feedback empresa',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.business),
+                      title: Text('${widget.event.companyFeedback!.rating}/5'),
+                      subtitle: Text(widget.event.companyFeedback!.comment),
+                    ),
+                  ],
+                ],
               ],
-            ],
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

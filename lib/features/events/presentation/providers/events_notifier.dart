@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterv1/features/events/domain/usecases/get_event_by_id.dart';
+import 'package:flutterv1/features/events/domain/usecases/get_total_pay_for_event.dart';
 import 'package:table_calendar/table_calendar.dart'; // Para isSameDay
 import 'package:flutterv1/features/events/domain/entities/event.dart';
 import 'package:flutterv1/features/events/domain/usecases/get_all_events.dart';
@@ -11,22 +13,24 @@ class EventsNotifier extends ChangeNotifier {
   final GetAllEvents _getAll;
   final GetFirstEverEvent _getFirst;
   final GetLastEvent _getLast;
-
-  EventsNotifier(this._getAll, this._getFirst, this._getLast) {
-    _init();
-  }
+  final GetEventById _getEventById;
+  final GetTotalPayForEvent _getTotalPayForEvent;
 
   bool isLoading = false;
 
-  List<Event> visibleEvents = [];
-  DateTime firstAllowedDay = DateTime.now();
-  DateTime lastAllowedDay = DateTime.now();
+  // List<Event> visibleEvents = [];
+  late DateTime firstAllowedDay;
+  late DateTime lastAllowedDay;
 
   TimeFilter _timeFilter = TimeFilter.future;
   String? _selectedBrand;
 
+  Future<Event> getEventById(String id) async => _getEventById(id);
+  Future<List<Event>> get allEvents async => _getAll();
   TimeFilter get timeFilter => _timeFilter;
-  String get selectedBrand => _selectedBrand ?? '';
+  String? get selectedBrand => _selectedBrand;
+  Future<double> getTotalPayForEvent(String eventid) =>
+      _getTotalPayForEvent(eventid);
 
   Future<List<String>> get availableBrands =>
       _getAll().then((value) => value.map((e) => e.brand).toSet().toList());
@@ -41,15 +45,27 @@ class EventsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  EventsNotifier(
+    this._getAll,
+    this._getFirst,
+    this._getLast,
+    this._getEventById,
+    this._getTotalPayForEvent,
+  ) {
+    _init();
+  }
+
   Future<void> _init() async {
-    isLoading = true;
-    notifyListeners();
+    isLoadingChanged(true);
 
     firstAllowedDay = await _getFirst();
     lastAllowedDay = await _getLast();
-    visibleEvents = await _getAll();
 
-    isLoading = false;
+    isLoadingChanged(false);
+  }
+
+  void isLoadingChanged(bool value) {
+    isLoading = value;
     notifyListeners();
   }
 

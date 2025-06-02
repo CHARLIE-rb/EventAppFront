@@ -5,10 +5,10 @@ class EventExpansionPanels extends StatefulWidget {
   const EventExpansionPanels({super.key});
 
   @override
-  State<EventExpansionPanels> createState() => _ExpandibleItemsList();
+  State<EventExpansionPanels> createState() => _EventExpansionPanels();
 }
 
-class _ExpandibleItemsList extends State<EventExpansionPanels> {
+class _EventExpansionPanels extends State<EventExpansionPanels> {
   int? _openPanel;
 
   @override

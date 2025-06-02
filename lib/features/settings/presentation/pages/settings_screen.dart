@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
           final authProvider = context.read<AuthProvider>();
           final navigator = Navigator.of(context);
 
-          final shouldLogout = await showDialog<bool>(
+          await showDialog<bool>(
             context: context,
             barrierDismissible: false,
             builder: (dialogCtx) {
@@ -52,11 +52,14 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () => Navigator.of(dialogCtx).pop(false),
+                    onPressed: () => navigator.pop(false),
                     child: const Text('Cancelar'),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.of(dialogCtx).pop(true),
+                    onPressed: () {
+                      navigator.pop(true);
+                      authProvider.logout();
+                    },
                     style: TextButton.styleFrom(
                       foregroundColor: theme.colorScheme.error,
                     ),
@@ -66,13 +69,6 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           );
-
-          if (shouldLogout == true) {
-            authProvider.logout();
-            if (context.mounted) {
-              navigator.pushReplacementNamed(AppRoutes.login);
-            }
-          }
         },
       );
     }
