@@ -49,7 +49,6 @@ class ExpandibleItem extends StatelessWidget {
   }
 }
 
-/// Tile individual de imagen en la grid
 class _GridImageTile extends StatelessWidget {
   final String imageUrl;
   final Alignment alignment;
@@ -59,49 +58,78 @@ class _GridImageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // Hero para la animación
-      onTap:
-          () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder:
-                  (_) => _FullImageScreen(
-                    imageUrl: imageUrl,
-                    alignment: alignment,
-                  ),
-            ),
-          ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Image.asset(imageUrl, fit: BoxFit.cover, alignment: alignment),
+      // Hero para la animación de transición
+      child: Hero(
+        tag: imageUrl,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.asset(imageUrl, fit: BoxFit.cover, alignment: alignment),
+        ),
       ),
+      onTap: () {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder:
+              (_) => _FullImageDialog(imageUrl: imageUrl, alignment: alignment),
+        );
+      },
     );
   }
 }
 
-/// Pantalla de vista ampliada con zoom/pan
-class _FullImageScreen extends StatelessWidget {
+class _FullImageDialog extends StatelessWidget {
   final String imageUrl;
   final Alignment alignment;
 
-  const _FullImageScreen({required this.imageUrl, required this.alignment});
+  const _FullImageDialog({required this.imageUrl, required this.alignment});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
+    return Dialog(
       backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(backgroundColor: Colors.transparent),
-      body: Center(
-        child: InteractiveViewer(
-          child: Hero(
-            tag: imageUrl,
-            child: Image.asset(
-              imageUrl,
-              fit: BoxFit.contain,
-              alignment: alignment,
+      insetPadding: const EdgeInsets.all(16),
+      child: Stack(
+        children: [
+          Center(
+            child: Hero(
+              tag: imageUrl,
+              child: InteractiveViewer(
+                panEnabled: true,
+                minScale: 1.0,
+                maxScale: 4.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    imageUrl,
+                    fit: BoxFit.contain,
+                    alignment: alignment,
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          Positioned(
+            top: 8,
+            right: 8,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(4),
+                child: Icon(
+                  Icons.close,
+                  color: theme.colorScheme.onPrimary,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

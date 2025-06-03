@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/data/datasources/forWidgets/expandible_items.dart';
+import 'package:flutterv1/shared/widgets/expandable_item.dart';
 
 class EventExpansionPanels extends StatefulWidget {
-  const EventExpansionPanels({super.key});
+  const EventExpansionPanels({
+    super.key,
+    required this.employeeExpandibleItemsList,
+  });
+
+  final List<ExpandableItem> employeeExpandibleItemsList;
 
   @override
   State<EventExpansionPanels> createState() => _EventExpansionPanels();
@@ -20,8 +25,8 @@ class _EventExpansionPanels extends State<EventExpansionPanels> {
       expansionCallback: (i, open) {
         setState(() => _openPanel = open ? null : i);
       },
-      children: List.generate(employeeExpandibleItemsList.length, (i) {
-        final item = employeeExpandibleItemsList[i];
+      children: List.generate(widget.employeeExpandibleItemsList.length, (i) {
+        final item = widget.employeeExpandibleItemsList[i];
         return _buildPanel(
           value: i,
           icon: item.icon,
