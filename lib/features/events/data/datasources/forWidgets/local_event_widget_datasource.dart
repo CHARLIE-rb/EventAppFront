@@ -1,8 +1,8 @@
 import 'package:flutterv1/features/events/data/datasources/forWidgets/event_widget_datasource.dart';
 import 'package:flutterv1/features/events/data/datasources/forWidgets/expandible_items.dart';
 import 'package:flutterv1/features/events/data/datasources/forWidgets/images_alignment_list.dart';
-import 'package:flutterv1/shared/widgets/expandable_item.dart';
-import 'package:flutterv1/shared/widgets/for_expandible_align_plus_image.dart';
+import 'package:flutterv1/shared/presentation/widgets/expandable_item.dart';
+import 'package:flutterv1/shared/presentation/widgets/for_expandible_align_plus_image.dart';
 
 class EventWidgetDataSourceImpl implements EventWidgetDataSource {
   @override

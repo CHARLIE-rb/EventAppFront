@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/core/navigation/routes.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/auth/presentation/pages/root_screen.dart';
+import 'package:flutterv1/shared/presentation/screens/root_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'core/inyeccion_dependencias/di.dart'; // init() llama a initAuthModule
+import 'core/inyeccion_dependencias/di.dart';
 import 'core/navigation/routes.dart';
-import 'shared/themes/app_theme_style.dart';
+import 'shared/presentation/themes/app_theme_style.dart';
 
 import 'features/auth/presentation/providers/auth_provider.dart';
 import 'features/settings/presentation/providers/settings_provider.dart';

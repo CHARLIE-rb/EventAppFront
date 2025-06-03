@@ -1,7 +1,7 @@
 // lib/features/auth/data/datasources/local/local_credential_storage.dart
 
 import 'package:shared_preferences/shared_preferences.dart';
-import '../credential_storage.dart';
+import '../../../../../shared/data/datasources/credential_storage.dart';
 
 class LocalCredentialStorage implements CredentialStorage {
   static const _keyUser = 'cred_user';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterv1/features/navigation/domain/entities/nav_item.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart' show Role;
 import 'package:flutterv1/features/events/presentation/pages/events_screen.dart';
-import 'package:flutterv1/features/profile/presentations/pages/profile_screen.dart';
-import 'package:flutterv1/features/settings/presentation/pages/settings_screen.dart';
+import 'package:flutterv1/features/profile/presentation/pages/profile_screen.dart';
+// import 'package:flutterv1/features/settings/presentation/pages/settings_screen.dart';
 
 class GetNavItems {
   static final List<NavItem> commonNavItems = [
@@ -14,12 +14,12 @@ class GetNavItems {
       screen: EventsScreen(),
       priority: 1,
     ),
-    NavItem(
-      icon: Icons.settings,
-      label: 'Ajustes',
-      screen: SettingsScreen(),
-      priority: 10,
-    ),
+    // NavItem(
+    //   icon: Icons.settings,
+    //   label: 'Ajustes',
+    //   screen: SettingsScreen(),
+    //   priority: 10,
+    // ),
     NavItem(
       icon: Icons.person,
       label: 'Perfil',

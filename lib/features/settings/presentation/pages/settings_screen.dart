@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/core/navigation/routes.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -102,14 +101,22 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: 24),
             ]),
           ),
-
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: logoutButton(),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: logoutButton(),
+              ),
             ),
           ),
+          // SliverFillRemaining(
+          //   hasScrollBody: false,
+          //   child: Align(
+          //     alignment: Alignment.bottomLeft,
+          //     child: logoutButton(),
+          //   ),
+          // ),
         ],
       ),
     );

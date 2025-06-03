@@ -16,7 +16,7 @@ class UserMapperImpl extends UserMapper {
       companyId: model.companyId,
       name: model.name,
       lastName: model.lastName,
-      role: model.role,
+      role: roleFromString(model.role),
       pin: model.pin,
       email: model.email,
       password: model.password,
@@ -25,7 +25,7 @@ class UserMapperImpl extends UserMapper {
   }
 
   @override
-  UserModel toModel(User user) {
+  UserModel toUserModel(User user) {
     final usermodel = UserModel(
       id: user.id,
       companyId: user.companyId,
@@ -34,7 +34,7 @@ class UserMapperImpl extends UserMapper {
       email: user.email,
       password: user.password,
       pin: user.pin,
-      role: user.role,
+      role: roleToString(user.role),
     );
     return usermodel;
   }

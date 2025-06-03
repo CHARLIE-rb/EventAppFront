@@ -1,5 +1,5 @@
 import 'package:flutterv1/features/events/domain/repositories/event_widget_repository.dart';
-import 'package:flutterv1/shared/widgets/expandable_item.dart';
+import 'package:flutterv1/shared/presentation/widgets/expandable_item.dart';
 
 class GetAllEmployeeExpandibleItemsList {
   final EventWidgetRepository _eventWidgetRepository;

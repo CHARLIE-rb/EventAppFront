@@ -3,7 +3,7 @@ import 'package:flutterv1/config/app_constants.dart';
 import 'package:flutterv1/features/auth/domain/entities/user.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
-import 'package:flutterv1/shared/widgets/mini/invierte_imagen_black_and_white.dart';
+import 'package:flutterv1/shared/presentation/widgets/mini/invierte_imagen_black_and_white.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
