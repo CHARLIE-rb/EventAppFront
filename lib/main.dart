@@ -1,52 +1,82 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/src/Utilities/routes.dart';
-import 'package:flutterv1/src/config/app_theme_style.dart';
-import 'package:flutterv1/src/providers/auth_provider.dart';
-import 'package:flutterv1/src/providers/settings_provider.dart';
-import 'package:flutterv1/src/providers/theme_provider.dart';
-// import 'package:intl/date_symbol_data_file.dart';
+import 'package:flutterv1/features/auth/presentation/pages/root_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-void main() async {
+import 'core/inyeccion_dependencias/di.dart'; // init() llama a initAuthModule
+import 'core/navigation/routes.dart';
+import 'shared/themes/app_theme_style.dart';
+
+import 'features/auth/presentation/providers/auth_provider.dart';
+import 'features/settings/presentation/providers/settings_provider.dart';
+import 'features/theme/presentation/providers/theme_provider.dart';
+import 'features/events/presentation/providers/events_notifier.dart';
+import 'features/navigation/presentation/providers/nav_notifier.dart';
+
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // Inicializa solo la localización 'es' (o null para todas)
-  await initializeDateFormatting('es', null);
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => SettingsProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        // ChangeNotifierProvider(create: (_) => CartProvider()),
-        // Provider(create: (_) => ProductsService()), // un servicio “simple”
-        // FutureProvider<List<Product>>(
-        // un provider asíncrono
-        // create: (_) => ProductsService().fetchAll(),
-        // initialData: const [],
-        // ),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const AppRoot());
+}
+
+class AppRoot extends StatelessWidget {
+  const AppRoot({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _initApp(),
+      builder: (ctx, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return const MaterialApp(
+            home: Scaffold(body: Center(child: CircularProgressIndicator())),
+          );
+        }
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider<AuthProvider>(
+              create: (_) => getIt<AuthProvider>(),
+            ),
+            ChangeNotifierProvider<SettingsProvider>(
+              create: (_) => getIt<SettingsProvider>(),
+            ),
+            ChangeNotifierProvider<ThemeProvider>(
+              create: (_) => getIt<ThemeProvider>(),
+            ),
+            ChangeNotifierProvider<EventsNotifier>(
+              create: (_) => getIt<EventsNotifier>(),
+            ),
+            ChangeNotifierProxyProvider<AuthProvider, NavNotifier>(
+              create: (_) => getIt<NavNotifier>(),
+              update: (_, auth, nav) => nav!,
+            ),
+          ],
+          child: const MyApp(),
+        );
+      },
+    );
+  }
+
+  Future<void> _initApp() async {
+    await initializeDateFormatting('es', null);
+    initDI();
+    await getIt.allReady();
+  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     final themeProv = context.watch<ThemeProvider>();
-
     return MaterialApp(
       title: 'Mi Flutter App',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProv.mode,
-      initialRoute: AppRoutes.root, // ruta inicial
-      routes: AppRoutes.routes, // rutas definidas en AppRoutes
-      onUnknownRoute: AppRoutes.onUnknownRoute, // ruta desconocida
+      home: const RootScreen(),
+      // initialRoute: AppRoutes.root,
+      routes: AppRoutes.routes,
+      onUnknownRoute: AppRoutes.onUnknownRoute,
     );
   }
 }
