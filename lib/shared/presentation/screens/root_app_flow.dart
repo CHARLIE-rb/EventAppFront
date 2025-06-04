@@ -1,7 +1,8 @@
 // lib/src/screens/root_app_flow.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flutterv1/shared/domain/entities/user.dart';
 import 'package:flutterv1/features/navigation/presentation/providers/nav_notifier.dart';
+import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
 import 'package:provider/provider.dart';
 
 class RootAppFlow extends StatelessWidget {
@@ -11,6 +12,7 @@ class RootAppFlow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final nav = context.watch<NavNotifier>();
+    final userProvider = context.read<SessionProvider>();
     final navItems = nav.items;
 
     if (navItems.isEmpty) {
@@ -50,22 +52,35 @@ class RootAppFlow extends StatelessWidget {
                       tabs:
                           navItems.map((n) {
                             if (n.label == 'Perfil') {
-                              return Tab(
-                                child: CircleAvatar(
-                                  backgroundColor: theme.colorScheme.secondary,
-                                  child: Text(
-                                    context
-                                            .read<AuthProvider>()
-                                            .user
-                                            ?.name
-                                            .substring(0, 1)
-                                            .toUpperCase() ??
-                                        'U',
-                                    style: TextStyle(
-                                      color: theme.colorScheme.surface,
+                              return FutureBuilder<User?>(
+                                future: userProvider.currentUser,
+                                builder: (context, snapshot) {
+                                  // Mientras el future no termine, mostramos una U por defecto
+                                  String letra = 'U';
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data!.name.isNotEmpty) {
+                                      letra =
+                                          snapshot.data!.name
+                                              .substring(0, 1)
+                                              .toUpperCase();
+                                    }
+                                  }
+
+                                  return Tab(
+                                    child: CircleAvatar(
+                                      backgroundColor:
+                                          theme.colorScheme.secondary,
+                                      child: Text(
+                                        letra,
+                                        style: TextStyle(
+                                          color: theme.colorScheme.surface,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
                             } else {
                               return Tab(text: n.label);

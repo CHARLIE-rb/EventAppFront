@@ -1,3 +1,4 @@
+import 'package:flutterv1/shared/data/datasources/credential_storage.dart';
 import 'package:flutterv1/shared/data/datasources/local_session_data.dart';
 import 'package:flutterv1/shared/domain/entities/auth_status.dart';
 import 'package:flutterv1/shared/domain/entities/current_user.dart';
@@ -5,38 +6,52 @@ import 'package:flutterv1/shared/domain/repositories/session_repository.dart';
 
 class SessionRepositoryImpl extends SessionRepository {
   final LocalSessionData _localSessionData;
-  SessionRepositoryImpl(this._localSessionData);
+  final CredentialStorage _credentialStorage;
+  SessionRepositoryImpl(this._localSessionData, this._credentialStorage);
+
   @override
-  Future<void> clearSession() async {
-    _localSessionData.session = CurrentUser.uninitialized();
+  Future<Map<String, String>?> getLastSessionCredentials() async {
+    return _credentialStorage.loadCredentials();
   }
 
   @override
-  Future<CurrentUser> getSession() async {
+  Future<void> clearSession() async {
+    _localSessionData.session = CurrentSession.uninitialized();
+    await _credentialStorage.clearCredentials();
+  }
+
+  @override
+  CurrentSession getSession() {
     return _localSessionData.session;
   }
 
   @override
-  Future<void> saveUserId(String userId) async {
-    final session = _localSessionData.session;
-    session.userId = userId;
-    _localSessionData.session = session;
+  Future<void> saveUser(String username, String password) async {
+    setCurrentUsername(username);
+    await _credentialStorage.saveCredentials(username, password);
   }
 
   @override
-  Future<void> changeUserStatus(UserStatus status) async {
+  Future<void> changeSessionStatus(UserStatus status) async {
     final session = _localSessionData.session;
     session.status = status;
     _localSessionData.session = session;
   }
 
   @override
-  Future<String> getCurrentUserId() async {
-    return _localSessionData.session.userId ?? '';
+  String? getCurrentUsername() {
+    return _localSessionData.session.username;
   }
 
   @override
-  Future<UserStatus> getUserStatus() async {
+  UserStatus getSessionStatus() {
     return _localSessionData.session.status;
+  }
+
+  @override
+  void setCurrentUsername(String username) {
+    final session = _localSessionData.session;
+    session.username = username;
+    _localSessionData.session = session;
   }
 }

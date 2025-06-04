@@ -1,11 +1,11 @@
 import 'package:flutterv1/shared/domain/entities/auth_status.dart';
 
-class CurrentUser {
-  String? userId;
+class CurrentSession {
+  String? username;
   UserStatus status;
 
-  CurrentUser({required this.userId, required this.status});
+  CurrentSession({required this.username, required this.status});
 
-  factory CurrentUser.uninitialized() =>
-      CurrentUser(userId: null, status: UserStatus.uninitialized);
+  factory CurrentSession.uninitialized() =>
+      CurrentSession(username: null, status: UserStatus.uninitialized);
 }

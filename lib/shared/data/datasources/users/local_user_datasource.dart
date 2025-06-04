@@ -1,5 +1,5 @@
-import 'package:flutterv1/shared/data/datasources/user_datasource.dart';
-import 'package:flutterv1/shared/data/datasources/users_local_data_list.dart';
+import 'package:flutterv1/shared/data/datasources/users/user_datasource.dart';
+import 'package:flutterv1/shared/data/datasources/users/users_local_data_list.dart';
 import 'package:flutterv1/shared/data/models/user_model.dart';
 
 class LocalUserDatasource implements UserDataSource {
@@ -7,7 +7,6 @@ class LocalUserDatasource implements UserDataSource {
 
   @override
   Future<void> addUser(UserModel user) async {
-    // Check if user already exists
     final existingUser = _users.firstWhere(
       (u) => u.id == user.id,
       orElse: () => UserModel.vacio(),
@@ -32,18 +31,25 @@ class LocalUserDatasource implements UserDataSource {
   Future<UserModel> getUserById(String userId) async {
     return _users.firstWhere(
       (user) => user.id == userId,
-      orElse: () => UserModel.vacio(),
+      orElse: () => throw Exception('User not found'),
     );
   }
 
   @override
-  Future<void> updateUser(UserModel user) {
+  Future<void> updateUser(UserModel user) async {
     final index = _users.indexWhere((u) => u.id == user.id);
     if (index != -1) {
       _users[index] = user;
     } else {
       throw Exception('User not found');
     }
-    return Future.value();
+  }
+
+  @override
+  Future<UserModel> getUserByUsername(String username) async {
+    return _users.firstWhere(
+      (user) => user.name == username,
+      orElse: () => throw Exception('User not found'),
+    );
   }
 }

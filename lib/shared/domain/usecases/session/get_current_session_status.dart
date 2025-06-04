@@ -1,12 +1,12 @@
 import 'package:flutterv1/shared/domain/entities/auth_status.dart';
 import 'package:flutterv1/shared/domain/repositories/session_repository.dart';
 
-class GetCurrentUserstatus {
+class GetCurrentSessionstatus {
   final SessionRepository _repo;
 
-  GetCurrentUserstatus(this._repo);
+  GetCurrentSessionstatus(this._repo);
 
-  Future<UserStatus> call() async {
-    return _repo.getUserStatus();
+  UserStatus call() {
+    return _repo.getSessionStatus();
   }
 }

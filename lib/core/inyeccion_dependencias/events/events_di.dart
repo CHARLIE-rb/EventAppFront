@@ -1,5 +1,4 @@
 import 'package:flutterv1/core/inyeccion_dependencias/events/events_widgets_di.dart';
-import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/features/events/data/datasources/event_data_source.dart';
 import 'package:flutterv1/features/events/data/datasources/events_local_data_source.dart';
 import 'package:flutterv1/features/events/data/mappers/event_mapper.dart';
@@ -14,6 +13,7 @@ import 'package:flutterv1/features/events/domain/usecases/get_last_event.dart';
 import 'package:flutterv1/features/events/domain/usecases/get_total_pay_for_event.dart';
 import 'package:flutterv1/features/events/presentation/providers/comments_notifier.dart';
 import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
+import 'package:flutterv1/shared/domain/usecases/session/get_current_user.dart';
 import 'package:get_it/get_it.dart';
 
 void initEventsModule(GetIt getIt) {
@@ -34,10 +34,13 @@ void initEventsModule(GetIt getIt) {
   getIt.registerFactory(
     () => EventsNotifier(getIt(), getIt(), getIt(), getIt(), getIt()),
   );
-  // NOTIFIER de comentarios, inyectando el Event y el Usuario actual:
-  getIt.registerFactoryParam<CommentsNotifier, Event, void>(
-    (event, _) => CommentsNotifier(event, getIt<AuthProvider>().user!),
-  );
+
+  getIt.registerFactoryParam<CommentsNotifier, Event, void>((event, _) {
+    // Obtenemos la instancia del caso de uso
+    final getCurrentUser = getIt<GetCurrentUser>();
+    // Creamos el CommentsNotifier pasándole el Event y el GetCurrentUser
+    return CommentsNotifier(event, getCurrentUser);
+  });
 
   initEventsWidgetsModule(getIt);
 }

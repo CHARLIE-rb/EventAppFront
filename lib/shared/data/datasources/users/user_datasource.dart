@@ -2,6 +2,7 @@ import 'package:flutterv1/shared/data/models/user_model.dart';
 
 abstract class UserDataSource {
   Future<UserModel> getUserById(String userId);
+  Future<UserModel> getUserByUsername(String username);
   Future<List<UserModel>> getAllUsers();
   Future<void> addUser(UserModel user);
   Future<void> updateUser(UserModel user);

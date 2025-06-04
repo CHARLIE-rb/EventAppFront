@@ -207,8 +207,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    print('submito');
-
     final navigator = Navigator.of(context);
 
     await _subSubmit(navigator);

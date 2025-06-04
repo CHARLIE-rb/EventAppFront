@@ -2,10 +2,10 @@ import 'package:flutterv1/features/companies/data/datasources/company_data_sourc
 import 'package:flutterv1/features/companies/domain/entities/company.dart';
 import 'package:flutterv1/features/companies/domain/repositories/company_repository.dart';
 
-class CompanyRepositorieImpl implements CompanyRepository {
+class CompanyRepositoryImpl implements CompanyRepository {
   final CompanyDataSource companyRemoteDatasource;
 
-  CompanyRepositorieImpl(this.companyRemoteDatasource);
+  CompanyRepositoryImpl(this.companyRemoteDatasource);
 
   @override
   Future<Company> createCompany(Company company) {

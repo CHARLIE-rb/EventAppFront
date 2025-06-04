@@ -1,35 +1,48 @@
-// lib/features/events/presentation/providers/comments_notifier.dart
-
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/auth/domain/entities/user.dart';
+import 'package:flutterv1/shared/domain/entities/user.dart';
 import 'package:flutterv1/features/events/domain/entities/event.dart';
+import 'package:flutterv1/shared/domain/usecases/session/get_current_user.dart';
 
-/// Aquí suponemos que tu EventRepositoryImpl ya actualiza
-/// los Event.employeeFeedbacks y Event.companyFeedback
-/// al guardar el feedback en el backend o mock local.
+/// Supone que tu EventRepositoryImpl ya actualiza
+/// Event.employeeFeedbacks y Event.companyFeedback
+/// al guardar el feedback en el backend o en un mock local.
 /// Si no, crea casos de uso AddEmployeeFeedback, AddCompanyFeedback, UpdateEmployeeFeedback.
 
 class CommentsNotifier extends ChangeNotifier {
   final Event _event;
-  final User _currentUser;
+  final GetCurrentUser _getCurrentUser;
+
+  User? _currentUser;
   List<FeedBack> employeeComments = [];
   FeedBack? companyComment;
   bool isLoading = false;
 
-  CommentsNotifier(this._event, this._currentUser) {
+  CommentsNotifier(this._event, this._getCurrentUser) {
     _init();
   }
 
-  void _init() {
-    // Copiamos los comentarios del event (inmutables en la entidad)
+  Future<void> _init() async {
+    isLoading = true;
+    notifyListeners();
+
+    // 1) Obtenemos el usuario actual mediante el caso de uso
+    _currentUser = await _getCurrentUser();
+
+    // 2) Copiamos los comentarios desde la entidad Event
     employeeComments = List.from(_event.employeeFeedbacks);
     companyComment = _event.companyFeedback;
+
+    isLoading = false;
+    notifyListeners();
   }
 
-  bool get isManager => _currentUser.role == Role.manager;
+  /// Getters para rol y estado del evento
+  bool get isManager => _currentUser?.role == Role.manager;
   bool get isEmployee =>
-      _currentUser.role != Role.manager && _currentUser.role != Role.company;
-  bool get isCompany => _currentUser.role == Role.company;
+      _currentUser != null &&
+      _currentUser!.role != Role.manager &&
+      _currentUser!.role != Role.company;
+  bool get isCompany => _currentUser?.role == Role.company;
   bool get isPastEvent => DateUtils.dateOnly(
     DateTime.now(),
   ).isAfter(DateUtils.dateOnly(_event.endDateTime));
@@ -39,36 +52,43 @@ class CommentsNotifier extends ChangeNotifier {
         _event.endDateTime.add(const Duration(hours: 48)),
       );
 
+  /// Devuelve el feedback del usuario actual (ya sea empleado o empresa)
   FeedBack? get myFeedback {
+    if (_currentUser == null) return null;
     if (isCompany) return companyComment;
-    final matches = employeeComments.where((fb) => fb.id == _currentUser.id);
+
+    final matches = employeeComments.where((fb) => fb.id == _currentUser!.id);
     return matches.isNotEmpty ? matches.first : null;
   }
 
-  /// Añade o actualiza tu feedback (empleado o empresa)
+  /// Añade o actualiza el feedback del usuario actual
   Future<void> submitFeedback({required int rating, String? comment}) async {
+    if (_currentUser == null) return;
+
     isLoading = true;
     notifyListeners();
 
     final now = DateTime.now();
     final fb = FeedBack(
-      id: _currentUser.id,
+      id: _currentUser!.id,
       rating: rating,
       comment: comment ?? '',
       timestamp: now,
     );
 
     if (isCompany) {
+      // Si el rol es empresa, guardamos en companyComment
       companyComment = fb;
-      // Aquí llamarías al use case AddCompanyFeedback(_event.id, fb);
+      // TODO: llamar al caso de uso AddCompanyFeedback(_event.id, fb);
     } else {
-      final idx = employeeComments.indexWhere((e) => e.id == _currentUser.id);
+      // Si es empleado, buscamos si ya existe feedback previo
+      final idx = employeeComments.indexWhere((e) => e.id == _currentUser!.id);
       if (idx >= 0) {
         employeeComments[idx] = fb;
-        // Llamar a UpdateEmployeeFeedback(_event.id, fb);
+        // TODO: llamar a UpdateEmployeeFeedback(_event.id, fb);
       } else {
         employeeComments.add(fb);
-        // Llamar a AddEmployeeFeedback(_event.id, fb);
+        // TODO: llamar a AddEmployeeFeedback(_event.id, fb);
       }
     }
 

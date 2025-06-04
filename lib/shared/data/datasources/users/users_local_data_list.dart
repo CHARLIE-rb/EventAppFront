@@ -1,4 +1,4 @@
-import 'package:flutterv1/features/auth/domain/entities/user.dart';
+import 'package:flutterv1/shared/domain/entities/user.dart';
 import 'package:flutterv1/shared/data/models/user_model.dart';
 
 final mockUserModel = <UserModel>[
