@@ -1,14 +1,11 @@
 import 'package:flutterv1/features/auth/data/datasources/auth_data_source.dart';
-import 'package:flutterv1/features/auth/data/mappers/user_mapper.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
 import 'package:flutterv1/shared/data/datasources/users/users_local_data_list.dart';
 import 'package:flutterv1/shared/data/models/user_model.dart';
 
 class AuthLocalDataSourceImpl implements AuthDataSource {
-  final UserMapper _userMapper;
   final List<UserModel> _mock = mockUserModel;
 
-  AuthLocalDataSourceImpl(this._userMapper);
+  AuthLocalDataSourceImpl();
 
   @override
   Future<bool> loginWithEmail(String email, String password) async {
@@ -31,8 +28,8 @@ class AuthLocalDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<bool> register(User user) async {
-    _mock.add(_userMapper.toUserModel(user));
+  Future<bool> register(UserModel user) async {
+    _mock.add(user);
     return true;
   }
 }

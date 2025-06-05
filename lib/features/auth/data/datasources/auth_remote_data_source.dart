@@ -1,5 +1,5 @@
 import 'package:flutterv1/features/auth/data/datasources/auth_data_source.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
+import 'package:flutterv1/shared/data/models/user_model.dart';
 
 class AuthRemoteDataSourceImpl implements AuthDataSource {
   @override
@@ -15,7 +15,7 @@ class AuthRemoteDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<bool> register(User user) {
+  Future<bool> register(UserModel user) {
     // TODO: implement register
     throw UnimplementedError();
   }

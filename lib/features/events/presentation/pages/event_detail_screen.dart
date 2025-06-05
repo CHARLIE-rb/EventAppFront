@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
 import 'package:flutterv1/features/events/presentation/widgets/details_card.dart';
 import 'package:flutterv1/features/events/presentation/widgets/expandible_items_list.dart';
+import 'package:flutterv1/main.dart';
 import 'package:flutterv1/shared/presentation/widgets/expandable_item.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';

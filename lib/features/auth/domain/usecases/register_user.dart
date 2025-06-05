@@ -5,5 +5,5 @@ class RegisterUser {
   final AuthRepository _repo;
   RegisterUser(this._repo);
 
-  Future<bool> call(User user) => _repo.register(user);
+  Future<bool> call(User user) async => _repo.register(user);
 }

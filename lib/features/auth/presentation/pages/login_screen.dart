@@ -3,6 +3,7 @@ import 'package:flutterv1/core/navigation/routes.dart';
 import 'package:flutterv1/config/app_constants.dart';
 import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
+import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
 import 'package:flutterv1/shared/presentation/widgets/mini/invierte_imagen_black_and_white.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final auth = context.watch<AuthProvider>();
     return Scaffold(
       backgroundColor: theme.colorScheme.onPrimary,
       appBar: AppBar(
@@ -108,10 +108,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         onSaved: (v) => _password = v!.trim(),
                       ),
 
-                      if (_error != null || auth.errorMessage != null) ...[
+                      if (_error != null) ...[
                         const SizedBox(height: 8),
                         Text(
-                          _error ?? auth.errorMessage!,
+                          _error!,
                           style: const TextStyle(color: Colors.red),
                         ),
                       ],
@@ -130,7 +130,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Botón que cambia a loading cuando _isLoading == true
                       SizedBox(
                         width: double.infinity,
                         height: 45,
@@ -207,12 +206,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    final navigator = Navigator.of(context);
-
-    await _subSubmit(navigator);
-  }
-
-  Future<void> _subSubmit(NavigatorState navigator) async {
     setState(() {
       _error = null;
     });
@@ -221,25 +214,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
       setState(() => _isLoading = true);
       try {
-        final ok = await context.read<AuthProvider>().loginMail(
+        await context.read<AuthProvider>().loginMail(
           _emailOrUsername,
           _password,
         );
-
-        if (!ok) {
-          setState(() {
-            _error =
-                context.read<AuthProvider>().errorMessage ??
-                'Credenciales inválidas';
-          });
-        }
       } catch (e) {
-        // Captura cualquier excepción inesperada
         setState(() {
-          _error = 'Ha ocurrido un error: ${e.toString()}';
+          _error = e.toString();
         });
       } finally {
         if (mounted) {
+          context.read<SessionProvider>().reload();
           setState(() => _isLoading = false);
         }
       }

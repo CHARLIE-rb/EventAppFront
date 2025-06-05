@@ -9,32 +9,16 @@ class AuthProvider extends ChangeNotifier {
   final LoginWithPin _loginPin;
   final RegisterUser _registerUser;
 
-  String? _errorMessage;
-
-  String? get errorMessage => _errorMessage;
-
   AuthProvider(this._loginEmail, this._loginPin, this._registerUser);
 
   Future<bool> loginMail(String email, String pass) async {
-    try {
-      _errorMessage = null;
-      await _loginEmail(email, pass);
-      return true;
-    } catch (e) {
-      _errorMessage = e.toString();
-      return false;
-    }
+    await _loginEmail(email, pass);
+    return true;
   }
 
   Future<bool> loginPin(String username, String pin) async {
-    try {
-      _errorMessage = null;
-      await _loginPin(username, pin);
-      return true;
-    } catch (e) {
-      _errorMessage = e.toString();
-      return false;
-    }
+    await _loginPin(username, pin);
+    return true;
   }
 
   void register(User u) {

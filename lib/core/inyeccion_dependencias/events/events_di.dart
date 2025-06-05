@@ -25,14 +25,21 @@ void initEventsModule(GetIt getIt) {
     () => EventRepositoryImpl(getIt(), getIt()),
   );
   getIt.registerLazySingleton(() => GetAllEvents(getIt()));
-  getIt.registerLazySingleton(() => GetEventById(getIt()));
-  getIt.registerLazySingleton(() => GetEventsByIds(getIt()));
   getIt.registerLazySingleton(() => GetFirstEverEvent(getIt()));
   getIt.registerLazySingleton(() => GetLastEvent(getIt()));
+  getIt.registerLazySingleton(() => GetEventById(getIt()));
   getIt.registerLazySingleton(() => GetTotalPayForEvent(getIt()));
+  getIt.registerLazySingleton(() => GetEventsByIds(getIt()));
 
   getIt.registerFactory(
-    () => EventsNotifier(getIt(), getIt(), getIt(), getIt(), getIt()),
+    () => EventsNotifier(
+      getIt<GetAllEvents>(),
+      getIt<GetFirstEverEvent>(),
+      getIt<GetLastEvent>(),
+      getIt<GetEventById>(),
+      getIt<GetTotalPayForEvent>(),
+      getIt<GetEventsByIds>(),
+    ),
   );
 
   getIt.registerFactoryParam<CommentsNotifier, Event, void>((event, _) {

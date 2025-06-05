@@ -11,25 +11,20 @@ class RootScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SessionProvider>(
-      builder: (context, sessionProv, _) {
-        final session = sessionProv.currentSession;
+    final currentSession = context.watch<SessionProvider>().currentSession;
+    switch (currentSession.status) {
+      case UserStatus.uninitialized:
+        return const _LoadingScaffold();
 
-        switch (session.status) {
-          case UserStatus.uninitialized:
-            return const _LoadingScaffold();
+      case UserStatus.unauthenticated:
+        return const LoginScreen();
 
-          case UserStatus.unauthenticated:
-            return const LoginScreen();
+      case UserStatus.pinRequired:
+        return PinLoginScreen(username: currentSession.username);
 
-          case UserStatus.pinRequired:
-            return PinLoginScreen(username: session.username);
-
-          case UserStatus.authenticated:
-            return const RootAppFlow();
-        }
-      },
-    );
+      case UserStatus.authenticated:
+        return const RootAppFlow();
+    }
   }
 }
 

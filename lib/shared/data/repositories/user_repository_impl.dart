@@ -1,4 +1,4 @@
-import 'package:flutterv1/features/auth/data/mappers/user_mapper.dart';
+import 'package:flutterv1/shared/data/mappers/user_mapper.dart';
 import 'package:flutterv1/shared/domain/entities/user.dart';
 import 'package:flutterv1/shared/data/datasources/users/user_datasource.dart';
 import 'package:flutterv1/shared/domain/repositories/user_repository.dart';
@@ -9,7 +9,7 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(this._userDataSource, this.userMapper);
   @override
   Future<void> addUser(User user) async {
-    final userDataModel = userMapper.toUserModel(user);
+    final userDataModel = userMapper.toModel(user);
     return _userDataSource.addUser(userDataModel);
   }
 
@@ -40,7 +40,7 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<void> updateUser(User user) async {
-    final userDataModel = userMapper.toUserModel(user);
+    final userDataModel = userMapper.toModel(user);
     return _userDataSource.updateUser(userDataModel);
   }
 

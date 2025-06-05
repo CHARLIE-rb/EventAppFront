@@ -4,11 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'credential_storage.dart';
 
 class LocalCredentialStorage implements CredentialStorage {
-  late final SharedPreferences _prefs;
+  // late final SharedPreferences _prefs;
 
-  Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
-  }
+  // Future<void> init() async {
+  //   _prefs = await SharedPreferences.getInstance();
+  // }
+
+  final SharedPreferences _prefs;
+  LocalCredentialStorage(this._prefs);
 
   @override
   Future<void> saveCredentials(String username, String pass) async {

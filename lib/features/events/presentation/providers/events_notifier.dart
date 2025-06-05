@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterv1/features/events/domain/usecases/get_event_by_id.dart';
+import 'package:flutterv1/features/events/domain/usecases/get_events_by_ids.dart';
 import 'package:flutterv1/features/events/domain/usecases/get_total_pay_for_event.dart';
 import 'package:table_calendar/table_calendar.dart'; // Para isSameDay
 import 'package:flutterv1/features/events/domain/entities/event.dart';
@@ -15,6 +16,7 @@ class EventsNotifier extends ChangeNotifier {
   final GetLastEvent _getLast;
   final GetEventById _getEventById;
   final GetTotalPayForEvent _getTotalPayForEvent;
+  final GetEventsByIds _getEventsByIds;
 
   bool isLoading = false;
 
@@ -51,6 +53,7 @@ class EventsNotifier extends ChangeNotifier {
     this._getLast,
     this._getEventById,
     this._getTotalPayForEvent,
+    this._getEventsByIds,
   ) {
     _init();
   }

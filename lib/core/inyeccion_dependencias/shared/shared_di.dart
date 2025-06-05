@@ -1,5 +1,6 @@
-// shared_di.dart
-
+import 'package:flutterv1/features/auth/domain/repositories/auth_repository.dart';
+import 'package:flutterv1/shared/data/mappers/user_mapper.dart';
+import 'package:flutterv1/shared/domain/usecases/users/load_last_user.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:flutterv1/shared/data/datasources/local_credential_storage.dart';
@@ -15,18 +16,14 @@ import 'package:flutterv1/shared/domain/usecases/session/get_current_session.dar
 import 'package:flutterv1/shared/domain/usecases/session/clear_session.dart';
 import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
 
-import 'package:flutterv1/features/auth/data/mappers/user_mapper.dart';
 import 'package:flutterv1/shared/data/datasources/users/local_user_datasource.dart';
 import 'package:flutterv1/shared/data/datasources/users/user_datasource.dart';
 import 'package:flutterv1/shared/data/repositories/user_repository_impl.dart';
 import 'package:flutterv1/shared/domain/repositories/user_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-/// Inicializa TODO lo relativo a “Shared” (CredentialStorage, SessionRepository,
-/// casos de uso de sesión, SessionProvider y también UserRepository).
-/// **No hay awaits aquí**: usamos registerSingletonWithDependencies + registerSingletonAsync.
-/// El orden concreto se resolverá en main() con getIt.allReady().
-void initSharedModule(GetIt getIt) {
-  // 1) Registros SÍNCRONOS que NO dependen de nada asíncrono:
+// void initSharedModule(GetIt getIt) {
+Future<void> initSharedModule(GetIt getIt) async {
   getIt.registerLazySingleton<LocalSessionData>(() => LocalSessionData());
 
   getIt.registerLazySingleton<UserDataSource>(() => LocalUserDatasource());
@@ -35,83 +32,89 @@ void initSharedModule(GetIt getIt) {
     () => UserRepositoryImpl(getIt<UserDataSource>(), getIt<UserMapper>()),
   );
 
-  // 2) CredentialStorage es un singleton ASÍNCRONO (p. ej. SharedPreferences.getInstance()):
-  getIt.registerSingletonAsync<CredentialStorage>(() async {
-    final storage = LocalCredentialStorage();
-    await storage.init(); // inicialización interna (SharedPreferences, etc)
-    return storage;
-  });
+  // getIt.registerSingletonAsync<CredentialStorage>(() async {
+  //   final storage = LocalCredentialStorage();
+  //   await storage.init();
+  //   return storage;
+  // });
 
-  // 3) SessionRepository depende de CredentialStorage:
-  //    sólo se creará cuando termine el Future de CredentialStorage.
-  getIt.registerSingletonWithDependencies<SessionRepository>(
-    () => SessionRepositoryImpl(
+  // getIt.registerSingletonAsync<CredentialStorage>(() async {
+  //   return LocalCredentialStorage(await getIt.getAsync<SharedPreferences>());
+  // }, dependsOn: [SharedPreferences]);
+
+  // 2. CredentialStorage deja de ser async
+  getIt.registerSingletonAsync<CredentialStorage>(
+    () async => LocalCredentialStorage(await SharedPreferences.getInstance()),
+  );
+
+  getIt.registerSingletonAsync<SessionRepository>(
+    () async => SessionRepositoryImpl(
       getIt<LocalSessionData>(),
       getIt<CredentialStorage>(),
     ),
     dependsOn: [CredentialStorage],
   );
 
-  // 4) Casos de uso de sesión (cada uno depende de SessionRepository):
-  getIt.registerSingletonWithDependencies<GetCurrentUser>(
-    () => GetCurrentUser(getIt<SessionRepository>(), getIt<UserRepository>()),
-    // dependsOn: [SessionRepository],
+  getIt.registerSingletonAsync<GetCurrentUser>(
+    () async => GetCurrentUser(
+      await getIt.getAsync<SessionRepository>(),
+      getIt<UserRepository>(),
+    ),
+    dependsOn: [SessionRepository],
   );
-  getIt.registerSingletonWithDependencies<Logout>(
-    () => Logout(getIt<SessionRepository>()),
-    // dependsOn: [SessionRepository],
+  getIt.registerSingletonAsync<Logout>(
+    () async => Logout(await getIt.getAsync<SessionRepository>()),
+    dependsOn: [SessionRepository],
   );
-  getIt.registerSingletonWithDependencies<ChangeSessionstatus>(
-    () => ChangeSessionstatus(getIt<SessionRepository>()),
-    // dependsOn: [SessionRepository],
+  getIt.registerSingletonAsync<ChangeSessionstatus>(
+    () async => ChangeSessionstatus(await getIt.getAsync<SessionRepository>()),
+    dependsOn: [SessionRepository],
   );
-  getIt.registerSingletonWithDependencies<GetCurrentSessionstatus>(
-    () => GetCurrentSessionstatus(getIt<SessionRepository>()),
-    // dependsOn: [SessionRepository],
+  getIt.registerSingletonAsync<GetCurrentSessionstatus>(
+    () async =>
+        GetCurrentSessionstatus(await getIt.getAsync<SessionRepository>()),
+    dependsOn: [SessionRepository],
   );
-  getIt.registerSingletonWithDependencies<GetCurrentSession>(
-    () => GetCurrentSession(getIt<SessionRepository>()),
-    // dependsOn: [SessionRepository],
+  getIt.registerSingletonAsync<GetCurrentSession>(
+    () async => GetCurrentSession(await getIt.getAsync<SessionRepository>()),
+    dependsOn: [SessionRepository],
   );
-  getIt.registerSingletonWithDependencies<ClearSession>(
-    () => ClearSession(getIt<SessionRepository>()),
-    // dependsOn: [SessionRepository],
+  getIt.registerSingletonAsync<ClearSession>(
+    () async => ClearSession(await getIt.getAsync<SessionRepository>()),
+    dependsOn: [SessionRepository],
+  );
+  getIt.registerSingletonAsync<LoadLastUser>(
+    () async => LoadLastUser(
+      await getIt.getAsync<SessionRepository>(),
+      getIt<AuthRepository>(),
+    ),
+    dependsOn: [SessionRepository],
   );
 
-  // 5) Finalmente, el SessionProvider (Factory) que inyecta todos los use‐cases:
-  //    No necesita “dependsOn” directo, porque:
-  //     - Todos los use‐cases ya están declarados como singletons
-  //       con dependencias sobre SessionRepository.
-  //     - Cuando alguien pida SessionProvider, GetIt ya habrá resuelto
-  //       primero CredentialStorage → SessionRepository → use‐cases.
-  // getIt.registerFactory<SessionProvider>(
-  //   () => SessionProvider(
-  //     getIt<GetCurrentUser>(),
-  //     getIt<Logout>(),
-  //     getIt<ChangeSessionstatus>(),
-  //     getIt<GetCurrentSessionstatus>(),
-  //     getIt<ClearSession>(),
-  //     getIt<GetCurrentSession>(),
-  //   ),
-  // );
   getIt.registerSingletonAsync<SessionProvider>(
-    () async => SessionProvider(
-      getIt<GetCurrentUser>(),
-      getIt<Logout>(),
-      getIt<ChangeSessionstatus>(),
-      getIt<GetCurrentSessionstatus>(),
-      getIt<ClearSession>(),
-      getIt<GetCurrentSession>(),
-    ),
+    () async {
+      // final sp = SessionProvider(
+      return SessionProvider(
+        await getIt.getAsync<GetCurrentUser>(),
+        await getIt.getAsync<Logout>(),
+        await getIt.getAsync<ChangeSessionstatus>(),
+        await getIt.getAsync<GetCurrentSessionstatus>(),
+        await getIt.getAsync<ClearSession>(),
+        await getIt.getAsync<GetCurrentSession>(),
+        await getIt.getAsync<LoadLastUser>(),
+      );
+      // await sp.initialize();
+      // await sp.loadLastUser();
+      // return sp;
+    },
     dependsOn: [
-      CredentialStorage,
-      SessionRepository,
       GetCurrentUser,
       Logout,
       ChangeSessionstatus,
       GetCurrentSessionstatus,
       ClearSession,
       GetCurrentSession,
+      LoadLastUser,
     ],
   );
 }

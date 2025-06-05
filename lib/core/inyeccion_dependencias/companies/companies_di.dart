@@ -9,13 +9,6 @@ import 'package:flutterv1/features/companies/presentation/providers/companies_no
 import 'package:get_it/get_it.dart';
 
 void initCompaniesModule(GetIt getIt) {
-  // ────────────────────────────────────────────────────────────────
-  // 6) COMPANIES
-  //    – CompanyDataSource (síncrono)
-  //    – CompanyRepository (depende de CompanyDataSource)
-  //    – GetAllCompanies, DeleteCompany, UpdateCompany (dependen de CompanyRepository)
-  //    – CompaniesNotifier (Factory) DEPENDE de GetAllCompanies, DeleteCompany, UpdateCompany
-  // ────────────────────────────────────────────────────────────────
   getIt.registerLazySingleton<CompanyDataSource>(
     () => CompanyLocalDataSourceImpl(),
   );
