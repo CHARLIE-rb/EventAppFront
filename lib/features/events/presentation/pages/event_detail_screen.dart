@@ -3,7 +3,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:events_app/core/inyeccion_dependencias/di.dart';
 import 'package:events_app/features/events/presentation/widgets/details_card.dart';
 import 'package:events_app/features/events/presentation/widgets/expandible_items_list.dart';
-import 'package:events_app/main.dart';
 import 'package:events_app/shared/presentation/widgets/expandable_item.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -20,14 +19,10 @@ class EventDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // 1) Provider de comentarios
         ChangeNotifierProvider<CommentsNotifier>(
           create: (_) => getIt<CommentsNotifier>(param1: event),
         ),
 
-        // 2) Provider para detalles (solo lectura)
-        //    Si tu clase sigue siendo ChangeNotifier, usa ChangeNotifierProvider.
-        //    Si ya la convertiste en servicio puro, use Provider<EventsDetailsNotifier>.
         ChangeNotifierProvider<EventsDetailsNotifier>(
           create: (_) => getIt<EventsDetailsNotifier>(param1: event.id),
         ),

@@ -21,7 +21,9 @@ Future<void> main() async {
   await initDI();
 
   final sessionProvider = getIt<SessionProvider>();
+  final eventsProvider = getIt<EventsNotifier>();
   await sessionProvider.initialize();
+  eventsProvider.initialize();
 
   runApp(
     MultiProvider(
@@ -31,7 +33,7 @@ Future<void> main() async {
         ChangeNotifierProvider.value(value: getIt<NavNotifier>()),
         ChangeNotifierProvider.value(value: getIt<SettingsProvider>()),
         ChangeNotifierProvider.value(value: getIt<ThemeProvider>()),
-        ChangeNotifierProvider.value(value: getIt<EventsNotifier>()),
+        ChangeNotifierProvider.value(value: eventsProvider),
       ],
       child: const MyApp(),
     ),

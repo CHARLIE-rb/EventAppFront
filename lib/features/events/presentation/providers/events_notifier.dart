@@ -20,7 +20,6 @@ class EventsNotifier extends ChangeNotifier {
 
   bool isLoading = false;
 
-  // List<Event> visibleEvents = [];
   late DateTime firstAllowedDay;
   late DateTime lastAllowedDay;
 
@@ -28,6 +27,8 @@ class EventsNotifier extends ChangeNotifier {
   String? _selectedBrand;
 
   Future<Event> getEventById(String id) async => _getEventById(id);
+  Future<List<Event>> getEventsByIds(List<String> ids) async =>
+      _getEventsByIds(ids);
   Future<List<Event>> get allEvents async => _getAll();
   TimeFilter get timeFilter => _timeFilter;
   String? get selectedBrand => _selectedBrand;
@@ -54,11 +55,9 @@ class EventsNotifier extends ChangeNotifier {
     this._getEventById,
     this._getTotalPayForEvent,
     this._getEventsByIds,
-  ) {
-    _init();
-  }
+  );
 
-  Future<void> _init() async {
+  Future<void> initialize() async {
     isLoadingChanged(true);
 
     firstAllowedDay = await _getFirst();
