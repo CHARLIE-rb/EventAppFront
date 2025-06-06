@@ -1,4 +1,4 @@
-import 'package:flutterv1/shared/presentation/widgets/for_expandible_align_plus_image.dart';
+import 'package:events_app/shared/presentation/widgets/for_expandible_align_plus_image.dart';
 
 final List<String> clothesNames = [
   'Login',

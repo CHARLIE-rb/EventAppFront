@@ -1,5 +1,5 @@
-import 'package:flutterv1/features/events/data/datasources/event_data_source.dart';
-import 'package:flutterv1/features/events/data/models/event_model.dart';
+import 'package:events_app/features/events/data/datasources/event_data_source.dart';
+import 'package:events_app/features/events/data/models/event_model.dart';
 
 class EventRemoteDataSourceImpl implements EventDataSource {
   @override

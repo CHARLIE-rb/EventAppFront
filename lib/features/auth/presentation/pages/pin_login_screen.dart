@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/config/app_constants.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
-import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
-import 'package:flutterv1/shared/presentation/widgets/mini/invierte_imagen_black_and_white.dart';
+import 'package:events_app/config/app_constants.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/features/auth/presentation/providers/auth_provider.dart';
+import 'package:events_app/features/theme/presentation/providers/theme_provider.dart';
+import 'package:events_app/shared/presentation/providers/session_provider.dart';
+import 'package:events_app/shared/presentation/widgets/mini/invierte_imagen_black_and_white.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class PinLoginScreen extends StatefulWidget {
-  const PinLoginScreen({super.key, this.username});
+  const PinLoginScreen({super.key, this.mail});
 
-  final String? username;
+  final String? mail;
 
   @override
   State<PinLoginScreen> createState() => _PinLoginScreenState();
@@ -19,8 +19,14 @@ class PinLoginScreen extends StatefulWidget {
 
 class _PinLoginScreenState extends State<PinLoginScreen> {
   final List<String> _currentPin = [];
+  final ValueNotifier<int> _pinLen = ValueNotifier<int>(0);
   final LocalAuthentication _auth = LocalAuthentication();
   bool didAuth = false;
+  @override
+  void dispose() {
+    _pinLen.dispose();
+    super.dispose();
+  }
 
   Future<void> _authenticateBiometrics() async {
     bool canCheck =
@@ -44,53 +50,67 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
-  void _onKeyPressed(String value) {
-    setState(() {
-      if (_currentPin.length < AppConstants.MAX_LENGTH_PASS) {
-        _currentPin.add(value);
-        if (_currentPin.length == AppConstants.MAX_LENGTH_PASS) {
-          _verifyPin();
-        }
-      }
-    });
+  void _onBackspace() {
+    if (_currentPin.isNotEmpty) {
+      _currentPin.removeLast();
+      _pinLen.value = _currentPin.length;
+    }
   }
 
-  void _verifyPin() async {
+  void _onKeyPressed(String value) {
+    if (_currentPin.length < AppConstants.maxLengthPass) {
+      _currentPin.add(value);
+      _pinLen.value = _currentPin.length;
+      if (_currentPin.length == AppConstants.maxLengthPass) {
+        _verifyPin();
+      }
+    }
+  }
+
+  Future<void> _verifyPin() async {
     final entered = _currentPin.join();
     try {
-      didAuth = await context.read<AuthProvider>().loginPin(
-        widget.username!,
+      final ok = await context.read<AuthProvider>().loginPin(
+        widget.mail!,
         entered,
       );
-    } catch (e) {
-      _showError("Error de autenticación: $e");
-    }
-    if (!mounted || !didAuth) {
-      _showError("PIN incorrecto");
-      setState(() {
+      if (mounted && ok) {
+        context.read<SessionProvider>().reload();
+      } else {
+        _showError(AppConstants.errorMessagePinLogin);
         _currentPin.clear();
-      });
+        _pinLen.value = 0;
+      }
+    } catch (e) {
+      _showError(e.toString().replaceAll('Exception: ', ''));
     }
   }
 
   Widget _buildPinIndicators(ThemeData theme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(AppConstants.MAX_LENGTH_PASS, (i) {
-        bool filled = i < _currentPin.length;
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: 8),
-          width: 16,
-          height: 16,
-          decoration: BoxDecoration(
-            color:
-                filled
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.secondary,
-            shape: BoxShape.circle,
-          ),
+    return ValueListenableBuilder<int>(
+      valueListenable: _pinLen,
+      builder: (_, len, __) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(AppConstants.maxLengthPass, (i) {
+            final filled = i < len;
+            return AnimatedContainer(
+              // pequeño efecto de relleno
+              duration: const Duration(milliseconds: 150),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                color:
+                    filled
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.secondary,
+                shape: BoxShape.circle,
+              ),
+            );
+          }),
         );
-      }),
+      },
     );
   }
 
@@ -182,7 +202,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
                 CircleAvatar(
                   child: InvierteImagenBnW(
                     theme: theme,
-                    imagePath: AppConstants.LOGO_PATH,
+                    imagePath: AppConstants.logoPath,
                     width: 50,
                   ),
                 ),
@@ -228,13 +248,7 @@ class _PinLoginScreenState extends State<PinLoginScreen> {
                               size: 32,
                               color: theme.colorScheme.onSurface,
                             ),
-                            onTap: () {
-                              setState(() {
-                                if (_currentPin.isNotEmpty) {
-                                  _currentPin.removeLast();
-                                }
-                              });
-                            },
+                            onTap: _onBackspace,
                           ),
                         ],
                       ),

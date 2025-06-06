@@ -1,5 +1,5 @@
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/shared/data/models/user_model.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/shared/data/models/user_model.dart';
 import 'package:smartstruct/smartstruct.dart';
 
 part 'user_mapper.mapper.g.dart';

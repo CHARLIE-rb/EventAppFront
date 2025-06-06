@@ -1,4 +1,4 @@
-# flutterv1
+# events_app
 
 A new Flutter project.
 

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/shared/domain/entities/current_user.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/shared/domain/entities/auth_status.dart';
-import 'package:flutterv1/shared/domain/usecases/session/change_session_status.dart';
-import 'package:flutterv1/shared/domain/usecases/session/clear_session.dart';
-import 'package:flutterv1/shared/domain/usecases/session/get_current_session.dart';
-import 'package:flutterv1/shared/domain/usecases/session/get_current_user.dart';
-import 'package:flutterv1/shared/domain/usecases/session/get_current_session_status.dart';
-import 'package:flutterv1/shared/domain/usecases/session/logout.dart';
-import 'package:flutterv1/shared/domain/usecases/users/load_last_user.dart';
+import 'package:events_app/shared/domain/entities/current_user.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/shared/domain/entities/auth_status.dart';
+import 'package:events_app/shared/domain/usecases/session/change_session_status.dart';
+import 'package:events_app/shared/domain/usecases/session/clear_session.dart';
+import 'package:events_app/shared/domain/usecases/session/get_current_session.dart';
+import 'package:events_app/shared/domain/usecases/session/get_current_user.dart';
+import 'package:events_app/shared/domain/usecases/session/get_current_session_status.dart';
+import 'package:events_app/shared/domain/usecases/users/load_last_user.dart';
 
 class SessionProvider extends ChangeNotifier {
   final GetCurrentUser _getCurrentUser;
-  final Logout _logout;
   final ChangeSessionstatus _changeUserStatus;
   final GetCurrentSessionstatus _getCurrentUserStatus;
   final GetCurrentSession _getCurrentSession;
@@ -21,29 +19,23 @@ class SessionProvider extends ChangeNotifier {
 
   SessionProvider(
     this._getCurrentUser,
-    this._logout,
     this._changeUserStatus,
     this._getCurrentUserStatus,
     this._clearSession,
     this._getCurrentSession,
     this._loadLastUser,
-  ) {
-    _initialize();
-  }
+  );
 
-  Future<void> loadLastUser() async => await _loadLastUser();
   CurrentSession get currentSession => _getCurrentSession();
 
-  Future<void> _initialize() async {
-    _changeUserStatus(UserStatus.uninitialized);
-    reload();
+  Future<void> initialize() async {
+    await _loadLastUser();
     final user = await _getCurrentUser();
     if (user != null) {
       _changeUserStatus(UserStatus.pinRequired);
     } else {
       _changeUserStatus(UserStatus.unauthenticated);
     }
-    reload();
   }
 
   void reload() => notifyListeners();
@@ -55,8 +47,8 @@ class SessionProvider extends ChangeNotifier {
   UserStatus get authStatus => _getCurrentUserStatus();
 
   Future<void> logout() async {
-    await _logout();
-    _clearSession();
+    await _clearSession();
+    _changeUserStatus(UserStatus.unauthenticated);
     reload();
   }
 }

@@ -1,5 +1,5 @@
-import 'package:flutterv1/features/auth/data/datasources/auth_data_source.dart';
-import 'package:flutterv1/shared/data/models/user_model.dart';
+import 'package:events_app/features/auth/data/datasources/auth_data_source.dart';
+import 'package:events_app/shared/data/models/user_model.dart';
 
 class AuthRemoteDataSourceImpl implements AuthDataSource {
   @override
@@ -9,7 +9,7 @@ class AuthRemoteDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<bool> loginWithPin(String id, String pin) {
+  Future<bool> loginWithPin(String mail, String pin) {
     // TODO: implement loginWithPin
     throw UnimplementedError();
   }

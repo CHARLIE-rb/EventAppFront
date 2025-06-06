@@ -1,8 +1,8 @@
-import 'package:flutterv1/shared/data/datasources/credential_storage.dart';
-import 'package:flutterv1/shared/data/datasources/local_session_data.dart';
-import 'package:flutterv1/shared/domain/entities/auth_status.dart';
-import 'package:flutterv1/shared/domain/entities/current_user.dart';
-import 'package:flutterv1/shared/domain/repositories/session_repository.dart';
+import 'package:events_app/shared/data/datasources/credential_storage.dart';
+import 'package:events_app/shared/data/datasources/local_session_data.dart';
+import 'package:events_app/shared/domain/entities/auth_status.dart';
+import 'package:events_app/shared/domain/entities/current_user.dart';
+import 'package:events_app/shared/domain/repositories/session_repository.dart';
 
 class SessionRepositoryImpl extends SessionRepository {
   final LocalSessionData _localSessionData;
@@ -40,7 +40,7 @@ class SessionRepositoryImpl extends SessionRepository {
 
   @override
   String? getCurrentUsername() {
-    return _localSessionData.session.username;
+    return _localSessionData.session.mail;
   }
 
   @override
@@ -51,7 +51,7 @@ class SessionRepositoryImpl extends SessionRepository {
   @override
   void setCurrentUsername(String username) {
     final session = _localSessionData.session;
-    session.username = username;
+    session.mail = username;
     _localSessionData.session = session;
   }
 }

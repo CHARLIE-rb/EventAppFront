@@ -1,5 +1,5 @@
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/features/auth/domain/repositories/auth_repository.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/features/auth/domain/repositories/auth_repository.dart';
 
 class RegisterUser {
   final AuthRepository _repo;

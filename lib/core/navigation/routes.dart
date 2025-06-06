@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/auth/presentation/pages/forgot_password.dart';
-import 'package:flutterv1/features/auth/presentation/pages/login_screen.dart';
-import 'package:flutterv1/features/auth/presentation/pages/register_screen.dart';
+import 'package:events_app/features/auth/presentation/pages/forgot_password.dart';
+import 'package:events_app/features/auth/presentation/pages/login_screen.dart';
+import 'package:events_app/features/auth/presentation/pages/register_screen.dart';
 
 class AppRoutes {
   // 1. Definición de nombres de ruta como constantes

@@ -1,4 +1,4 @@
-import 'package:flutterv1/features/companies/domain/entities/company.dart';
+import 'package:events_app/features/companies/domain/entities/company.dart';
 
 abstract class CompanyDataSource {
   Future<List<Company>> getAllCompanies();

@@ -1,4 +1,4 @@
-import 'package:flutterv1/features/events/data/models/event_model.dart';
+import 'package:events_app/features/events/data/models/event_model.dart';
 
 abstract class EventDataSource {
   Future<List<EventModel>> get allEvents;

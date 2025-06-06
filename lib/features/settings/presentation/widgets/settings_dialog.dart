@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
+import 'package:events_app/features/theme/presentation/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class SettingsDialog extends StatefulWidget {
@@ -37,17 +37,8 @@ class _SettingsDialogState extends State<SettingsDialog> {
               value: theme.brightness == Brightness.dark,
               onChanged: (_) {
                 context.read<ThemeProvider>().toggle();
-                // setState(() {
-                //   isDarkMode = value;
-                // });
-                // Aquí deberías llamar a la lógica real que cambia el tema de la app.
-                // Por ejemplo, si usas Provider para el tema:
-                // Provider.of<ThemeNotifier>(context, listen: false)
-                //     .setDarkMode(value);
               },
             ),
-
-            // Switch para Notificaciones
             SwitchListTile(
               title: const Text('Notificaciones'),
               secondary: const Icon(Icons.notifications),
@@ -65,7 +56,6 @@ class _SettingsDialogState extends State<SettingsDialog> {
 
             const Divider(),
 
-            // Opciones adicionales
             ListTile(
               leading: const Icon(Icons.lock),
               title: const Text('Cambiar contraseña'),
@@ -82,7 +72,6 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 // Mostrar política de privacidad
               },
             ),
-            // Agrega más opciones según necesites…
           ],
         ),
       ),

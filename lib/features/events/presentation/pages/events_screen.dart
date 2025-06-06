@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutterv1/features/events/domain/entities/event.dart';
-import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
-import 'package:flutterv1/features/events/presentation/widgets/calendario/custom_calendar_together.dart';
-import 'package:flutterv1/features/events/presentation/pages/event_detail_screen.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/presentation/providers/events_notifier.dart';
+import 'package:events_app/features/events/presentation/widgets/calendario/custom_calendar_together.dart';
+import 'package:events_app/features/events/presentation/pages/event_detail_screen.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});

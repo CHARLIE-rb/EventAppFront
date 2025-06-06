@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/domain/usecases/get_event_by_id.dart';
-import 'package:flutterv1/features/events/domain/usecases/get_events_by_ids.dart';
-import 'package:flutterv1/features/events/domain/usecases/get_total_pay_for_event.dart';
+import 'package:events_app/features/events/domain/usecases/get_event_by_id.dart';
+import 'package:events_app/features/events/domain/usecases/get_events_by_ids.dart';
+import 'package:events_app/features/events/domain/usecases/get_total_pay_for_event.dart';
 import 'package:table_calendar/table_calendar.dart'; // Para isSameDay
-import 'package:flutterv1/features/events/domain/entities/event.dart';
-import 'package:flutterv1/features/events/domain/usecases/get_all_events.dart';
-import 'package:flutterv1/features/events/domain/usecases/get_first_ever_event.dart';
-import 'package:flutterv1/features/events/domain/usecases/get_last_event.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/domain/usecases/get_all_events.dart';
+import 'package:events_app/features/events/domain/usecases/get_first_ever_event.dart';
+import 'package:events_app/features/events/domain/usecases/get_last_event.dart';
 
 enum TimeFilter { all, future, past }
 

@@ -1,6 +1,6 @@
-import 'package:flutterv1/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutterv1/shared/domain/entities/auth_status.dart';
-import 'package:flutterv1/shared/domain/repositories/session_repository.dart';
+import 'package:events_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:events_app/shared/domain/entities/auth_status.dart';
+import 'package:events_app/shared/domain/repositories/session_repository.dart';
 
 class LoginWithEmail {
   final AuthRepository _repo;

@@ -1,6 +1,6 @@
 // lib/features/auth/domain/repositories/auth_repository.dart
 
-import 'package:flutterv1/shared/domain/entities/user.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
 
 abstract class AuthRepository {
   Future<bool> loginWithEmail(String email, String password);

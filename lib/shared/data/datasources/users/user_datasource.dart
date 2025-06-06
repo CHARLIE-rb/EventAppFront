@@ -1,8 +1,8 @@
-import 'package:flutterv1/shared/data/models/user_model.dart';
+import 'package:events_app/shared/data/models/user_model.dart';
 
 abstract class UserDataSource {
   Future<UserModel> getUserById(String userId);
-  Future<UserModel> getUserByUsername(String username);
+  Future<UserModel> getUserByMail(String mail);
   Future<List<UserModel>> getAllUsers();
   Future<void> addUser(UserModel user);
   Future<void> updateUser(UserModel user);

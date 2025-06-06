@@ -1,5 +1,5 @@
-import 'package:flutterv1/features/companies/data/datasources/company_data_source.dart';
-import 'package:flutterv1/features/companies/domain/entities/company.dart';
+import 'package:events_app/features/companies/data/datasources/company_data_source.dart';
+import 'package:events_app/features/companies/domain/entities/company.dart';
 
 class CompanyRemoteDatasourceImpl implements CompanyDataSource {
   @override

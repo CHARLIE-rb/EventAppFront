@@ -1,5 +1,6 @@
+import 'package:events_app/features/profile/presentation/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/settings/presentation/widgets/settings_dialog.dart';
+import 'package:events_app/features/settings/presentation/widgets/settings_dialog.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -197,7 +198,15 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: LogoutButton(),
+              ),
+            ),
+          ),
           // Un poco de espacio extra abajo
           SliverToBoxAdapter(child: SizedBox(height: 30)),
         ],

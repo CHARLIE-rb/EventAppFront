@@ -1,7 +1,7 @@
-// import 'package:flutterv1/features/auth/data/datasources/auth_service.dart';
-// import 'package:flutterv1/features/auth/domain/entities/user.dart';
-// import 'package:flutterv1/features/events/data/datasources/events_data.dart';
-// import 'package:flutterv1/features/events/data/models/event.dart';
+// import 'package:events_app/features/auth/data/datasources/auth_service.dart';
+// import 'package:events_app/features/auth/domain/entities/user.dart';
+// import 'package:events_app/features/events/data/datasources/events_data.dart';
+// import 'package:events_app/features/events/data/models/event.dart';
 
 // class EventService {
 //   AuthService authService = AuthService();

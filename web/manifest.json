@@ -1,6 +1,6 @@
 {
-    "name": "flutterv1",
-    "short_name": "flutterv1",
+    "name": "events_app",
+    "short_name": "events_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

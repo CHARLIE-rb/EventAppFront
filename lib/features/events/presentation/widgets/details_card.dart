@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 

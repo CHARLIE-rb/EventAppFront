@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
-import 'package:flutterv1/shared/presentation/screens/root_screen.dart';
+import 'package:events_app/features/auth/presentation/providers/auth_provider.dart';
+import 'package:events_app/shared/presentation/providers/session_provider.dart';
+import 'package:events_app/shared/presentation/screens/root_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -19,10 +19,14 @@ Future<void> main() async {
   await initializeDateFormatting('es', null);
 
   await initDI();
+
+  final sessionProvider = getIt<SessionProvider>();
+  await sessionProvider.initialize();
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: getIt<SessionProvider>()),
+        ChangeNotifierProvider.value(value: sessionProvider),
         ChangeNotifierProvider.value(value: getIt<AuthProvider>()),
         ChangeNotifierProvider.value(value: getIt<NavNotifier>()),
         ChangeNotifierProvider.value(value: getIt<SettingsProvider>()),
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProv = context.watch<ThemeProvider>();
     return MaterialApp(
-      title: 'Mi Flutter App',
+      title: 'Events App',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProv.mode,

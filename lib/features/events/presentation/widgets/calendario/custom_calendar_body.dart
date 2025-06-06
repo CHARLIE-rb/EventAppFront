@@ -1,6 +1,6 @@
 // lib/widgets/events_calendar.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 /// Un TableCalendar configurado para mostrar tus [events].

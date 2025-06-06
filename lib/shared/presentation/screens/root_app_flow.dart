@@ -1,18 +1,30 @@
 // lib/src/screens/root_app_flow.dart
 import 'package:flutter/material.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/features/navigation/presentation/providers/nav_notifier.dart';
-import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/features/navigation/presentation/providers/nav_notifier.dart';
+import 'package:events_app/shared/presentation/providers/session_provider.dart';
 import 'package:provider/provider.dart';
 
-class RootAppFlow extends StatelessWidget {
+class RootAppFlow extends StatefulWidget {
   const RootAppFlow({super.key});
+
+  @override
+  State<RootAppFlow> createState() => _RootAppFlowState();
+}
+
+class _RootAppFlowState extends State<RootAppFlow> {
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<NavNotifier>().load();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final nav = context.watch<NavNotifier>();
     final userProvider = context.read<SessionProvider>();
+    final nav = context.watch<NavNotifier>();
     final navItems = nav.items;
 
     if (navItems.isEmpty) {
@@ -55,7 +67,6 @@ class RootAppFlow extends StatelessWidget {
                               return FutureBuilder<User?>(
                                 future: userProvider.currentUser,
                                 builder: (context, snapshot) {
-                                  // Mientras el future no termine, mostramos una U por defecto
                                   String letra = 'U';
                                   if (snapshot.connectionState ==
                                       ConnectionState.done) {

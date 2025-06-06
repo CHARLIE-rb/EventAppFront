@@ -1,5 +1,5 @@
-import 'package:flutterv1/features/events/domain/entities/event.dart';
-import 'package:flutterv1/features/events/domain/repositories/event_repository.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/domain/repositories/event_repository.dart';
 
 class GetEventById {
   final EventRepository repository;

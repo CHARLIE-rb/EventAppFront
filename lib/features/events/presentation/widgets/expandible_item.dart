@@ -1,8 +1,8 @@
 // lib/widgets/packing_list_with_images.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutterv1/shared/presentation/widgets/for_expandible_align_plus_image.dart';
-import 'package:flutterv1/shared/presentation/widgets/mini/listado_puntos.dart';
+import 'package:events_app/shared/presentation/widgets/for_expandible_align_plus_image.dart';
+import 'package:events_app/shared/presentation/widgets/mini/listado_puntos.dart';
 
 class ExpandibleItem extends StatelessWidget {
   final List<ImageLikePint> itemsWithAlign;

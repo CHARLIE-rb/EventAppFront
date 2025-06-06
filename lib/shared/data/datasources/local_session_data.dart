@@ -1,4 +1,4 @@
-import 'package:flutterv1/shared/domain/entities/current_user.dart';
+import 'package:events_app/shared/domain/entities/current_user.dart';
 
 class LocalSessionData {
   CurrentSession _currentSession = CurrentSession.uninitialized();

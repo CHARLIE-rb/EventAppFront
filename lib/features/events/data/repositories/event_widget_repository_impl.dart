@@ -1,7 +1,7 @@
-import 'package:flutterv1/features/events/data/datasources/forWidgets/event_widget_datasource.dart';
-import 'package:flutterv1/features/events/domain/repositories/event_widget_repository.dart';
-import 'package:flutterv1/shared/presentation/widgets/expandable_item.dart';
-import 'package:flutterv1/shared/presentation/widgets/for_expandible_align_plus_image.dart';
+import 'package:events_app/features/events/data/datasources/forWidgets/event_widget_datasource.dart';
+import 'package:events_app/features/events/domain/repositories/event_widget_repository.dart';
+import 'package:events_app/shared/presentation/widgets/expandable_item.dart';
+import 'package:events_app/shared/presentation/widgets/for_expandible_align_plus_image.dart';
 
 class EventWidgetRepositoryImpl extends EventWidgetRepository {
   final EventWidgetDataSource _eventWidgetDataSource;

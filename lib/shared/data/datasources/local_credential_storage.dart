@@ -24,7 +24,7 @@ class LocalCredentialStorage implements CredentialStorage {
     final user = _prefs.getString(CredentialStorage.keyUser);
     final pass = _prefs.getString(CredentialStorage.keyPass);
     if (user == null || pass == null) return null;
-    return {'user': user, 'pass': pass};
+    return {CredentialStorage.keyUser: user, CredentialStorage.keyPass: pass};
   }
 
   @override

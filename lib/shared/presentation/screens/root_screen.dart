@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/auth/presentation/pages/login_screen.dart';
-import 'package:flutterv1/features/auth/presentation/pages/pin_login_screen.dart';
-import 'package:flutterv1/shared/domain/entities/auth_status.dart';
-import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
-import 'package:flutterv1/shared/presentation/screens/root_app_flow.dart';
+import 'package:events_app/features/auth/presentation/pages/login_screen.dart';
+import 'package:events_app/features/auth/presentation/pages/pin_login_screen.dart';
+import 'package:events_app/shared/domain/entities/auth_status.dart';
+import 'package:events_app/shared/presentation/providers/session_provider.dart';
+import 'package:events_app/shared/presentation/screens/root_app_flow.dart';
 import 'package:provider/provider.dart';
 
 class RootScreen extends StatelessWidget {
@@ -20,7 +20,7 @@ class RootScreen extends StatelessWidget {
         return const LoginScreen();
 
       case UserStatus.pinRequired:
-        return PinLoginScreen(username: currentSession.username);
+        return PinLoginScreen(mail: currentSession.mail);
 
       case UserStatus.authenticated:
         return const RootAppFlow();

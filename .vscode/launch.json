@@ -5,20 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "FlutterV1 (debug)",
+            "name": "events_app (debug)",
             "request": "launch",
             "type": "dart",
             // Aquí le decimos a VS Code que debe usar lib/main.dart como entrypoint
             "program": "lib/main.dart"
         },
         {
-            "name": "FlutterV1 (profile mode)",
+            "name": "events_app (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "FlutterV1 (release mode)",
+            "name": "events_app (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

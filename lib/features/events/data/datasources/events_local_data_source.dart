@@ -1,5 +1,5 @@
-import 'package:flutterv1/features/events/data/datasources/event_data_source.dart';
-import 'package:flutterv1/features/events/data/datasources/events_local_list.dart';
+import 'package:events_app/features/events/data/datasources/event_data_source.dart';
+import 'package:events_app/features/events/data/datasources/events_local_list.dart';
 
 import '../models/event_model.dart';
 

@@ -1,5 +1,5 @@
-import 'package:flutterv1/shared/domain/entities/auth_status.dart';
-import 'package:flutterv1/shared/domain/entities/current_user.dart';
+import 'package:events_app/shared/domain/entities/auth_status.dart';
+import 'package:events_app/shared/domain/entities/current_user.dart';
 
 abstract class SessionRepository {
   CurrentSession getSession();

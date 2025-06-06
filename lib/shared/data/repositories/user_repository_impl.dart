@@ -1,7 +1,7 @@
-import 'package:flutterv1/shared/data/mappers/user_mapper.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/shared/data/datasources/users/user_datasource.dart';
-import 'package:flutterv1/shared/domain/repositories/user_repository.dart';
+import 'package:events_app/shared/data/mappers/user_mapper.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/shared/data/datasources/users/user_datasource.dart';
+import 'package:events_app/shared/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final UserDataSource _userDataSource;
@@ -45,9 +45,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<User?> getUserByUsername(String username) async {
+  Future<User?> getUserByEmail(String mail) async {
     try {
-      final userModel = await _userDataSource.getUserByUsername(username);
+      final userModel = await _userDataSource.getUserByMail(mail);
       return userMapper.toUser(userModel);
     } catch (_) {
       return null;

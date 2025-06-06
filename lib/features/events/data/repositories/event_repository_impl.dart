@@ -1,7 +1,7 @@
-import 'package:flutterv1/features/events/data/datasources/event_data_source.dart';
-import 'package:flutterv1/features/events/data/mappers/event_mapper.dart';
-import 'package:flutterv1/features/events/domain/entities/event.dart';
-import 'package:flutterv1/features/events/domain/repositories/event_repository.dart';
+import 'package:events_app/features/events/data/datasources/event_data_source.dart';
+import 'package:events_app/features/events/data/mappers/event_mapper.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/domain/repositories/event_repository.dart';
 
 class EventRepositoryImpl implements EventRepository {
   final EventDataSource _eventDataSource;

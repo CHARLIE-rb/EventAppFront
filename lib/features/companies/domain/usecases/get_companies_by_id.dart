@@ -1,5 +1,5 @@
-import 'package:flutterv1/features/companies/domain/entities/company.dart';
-import 'package:flutterv1/features/companies/domain/repositories/company_repository.dart';
+import 'package:events_app/features/companies/domain/entities/company.dart';
+import 'package:events_app/features/companies/domain/repositories/company_repository.dart';
 
 class GetCompaniesById {
   final CompanyRepository repository;

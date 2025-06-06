@@ -1,14 +1,14 @@
-import 'package:flutterv1/features/companies/data/datasources/company_data_source.dart';
-import 'package:flutterv1/features/companies/data/datasources/company_local_data_source.dart';
-import 'package:flutterv1/features/companies/data/repositories/company_repository_impl.dart';
-import 'package:flutterv1/features/companies/domain/repositories/company_repository.dart';
-import 'package:flutterv1/features/companies/domain/usecases/delete_company.dart';
-import 'package:flutterv1/features/companies/domain/usecases/get_all_companies.dart';
-import 'package:flutterv1/features/companies/domain/usecases/update_company.dart';
-import 'package:flutterv1/features/companies/presentation/providers/companies_notifier.dart';
+import 'package:events_app/features/companies/data/datasources/company_data_source.dart';
+import 'package:events_app/features/companies/data/datasources/company_local_data_source.dart';
+import 'package:events_app/features/companies/data/repositories/company_repository_impl.dart';
+import 'package:events_app/features/companies/domain/repositories/company_repository.dart';
+import 'package:events_app/features/companies/domain/usecases/delete_company.dart';
+import 'package:events_app/features/companies/domain/usecases/get_all_companies.dart';
+import 'package:events_app/features/companies/domain/usecases/update_company.dart';
+import 'package:events_app/features/companies/presentation/providers/companies_notifier.dart';
 import 'package:get_it/get_it.dart';
 
-void initCompaniesModule(GetIt getIt) {
+Future<void> initCompaniesModule(GetIt getIt) async {
   getIt.registerLazySingleton<CompanyDataSource>(
     () => CompanyLocalDataSourceImpl(),
   );

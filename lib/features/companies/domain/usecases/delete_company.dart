@@ -1,4 +1,4 @@
-import 'package:flutterv1/features/companies/domain/repositories/company_repository.dart';
+import 'package:events_app/features/companies/domain/repositories/company_repository.dart';
 
 class DeleteCompany {
   final CompanyRepository repository;

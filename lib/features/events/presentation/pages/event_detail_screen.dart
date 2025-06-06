@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutterv1/core/inyeccion_dependencias/di.dart';
-import 'package:flutterv1/features/events/presentation/widgets/details_card.dart';
-import 'package:flutterv1/features/events/presentation/widgets/expandible_items_list.dart';
-import 'package:flutterv1/main.dart';
-import 'package:flutterv1/shared/presentation/widgets/expandable_item.dart';
+import 'package:events_app/core/inyeccion_dependencias/di.dart';
+import 'package:events_app/features/events/presentation/widgets/details_card.dart';
+import 'package:events_app/features/events/presentation/widgets/expandible_items_list.dart';
+import 'package:events_app/main.dart';
+import 'package:events_app/shared/presentation/widgets/expandable_item.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import 'package:flutterv1/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
 import '../providers/comments_notifier.dart';
 import '../providers/events_details_notifier.dart'; // o el servicio si lo renombraste
 

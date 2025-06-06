@@ -1,5 +1,5 @@
-import 'package:flutterv1/features/invitations/domain/entities/invitation.dart';
-import 'package:flutterv1/features/invitations/domain/repositories/invitation_repository.dart';
+import 'package:events_app/features/invitations/domain/entities/invitation.dart';
+import 'package:events_app/features/invitations/domain/repositories/invitation_repository.dart';
 
 class InvitationRepositoryImpl implements InvitationRepository {
   //TODO: poner el datasource de invitaciones + mappers en caso de que haga falta

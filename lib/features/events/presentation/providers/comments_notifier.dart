@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/features/events/domain/entities/event.dart';
-import 'package:flutterv1/shared/domain/usecases/session/get_current_user.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
+import 'package:events_app/shared/domain/usecases/session/get_current_user.dart';
 
 /// Supone que tu EventRepositoryImpl ya actualiza
 /// Event.employeeFeedbacks y Event.companyFeedback

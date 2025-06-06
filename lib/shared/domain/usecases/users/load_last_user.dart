@@ -1,6 +1,7 @@
-import 'package:flutterv1/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutterv1/shared/data/datasources/credential_storage.dart';
-import 'package:flutterv1/shared/domain/repositories/session_repository.dart';
+import 'package:events_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:events_app/shared/data/datasources/credential_storage.dart';
+// import 'package:events_app/shared/domain/entities/auth_status.dart';
+import 'package:events_app/shared/domain/repositories/session_repository.dart';
 
 class LoadLastUser {
   final SessionRepository _sessionRepo;
@@ -10,10 +11,11 @@ class LoadLastUser {
   Future<void> call() async {
     final credentials = await _sessionRepo.getLastSessionCredentials();
     if (credentials != null) {
-      final username = credentials[CredentialStorage.keyUser]!;
+      final mail = credentials[CredentialStorage.keyUser]!;
       final password = credentials[CredentialStorage.keyPass]!;
-      _authRepo.loginWithEmail(username, password);
-      _sessionRepo.setCurrentUsername(username);
+      if (await _authRepo.loginWithEmail(mail, password)) {
+        _sessionRepo.setCurrentUsername(mail);
+      }
     }
   }
 }

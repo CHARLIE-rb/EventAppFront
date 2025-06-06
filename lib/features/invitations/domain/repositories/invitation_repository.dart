@@ -1,4 +1,4 @@
-import 'package:flutterv1/features/invitations/domain/entities/invitation.dart';
+import 'package:events_app/features/invitations/domain/entities/invitation.dart';
 
 abstract class InvitationRepository {
   Future<Invitation> sendInvitation(String userId, String eventId);

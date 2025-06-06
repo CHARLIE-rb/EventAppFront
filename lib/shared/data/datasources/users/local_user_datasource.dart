@@ -1,6 +1,6 @@
-import 'package:flutterv1/shared/data/datasources/users/user_datasource.dart';
-import 'package:flutterv1/shared/data/datasources/users/users_local_data_list.dart';
-import 'package:flutterv1/shared/data/models/user_model.dart';
+import 'package:events_app/shared/data/datasources/users/user_datasource.dart';
+import 'package:events_app/shared/data/datasources/users/users_local_data_list.dart';
+import 'package:events_app/shared/data/models/user_model.dart';
 
 class LocalUserDatasource implements UserDataSource {
   final List<UserModel> _users = mockUserModel;
@@ -46,9 +46,9 @@ class LocalUserDatasource implements UserDataSource {
   }
 
   @override
-  Future<UserModel> getUserByUsername(String username) async {
+  Future<UserModel> getUserByMail(String mail) async {
     return _users.firstWhere(
-      (user) => user.name == username,
+      (user) => user.email == mail,
       orElse: () => throw Exception('User not found'),
     );
   }

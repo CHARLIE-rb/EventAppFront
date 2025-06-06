@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/features/events/domain/entities/event.dart';
-import 'package:flutterv1/features/events/presentation/providers/events_notifier.dart';
-import 'package:flutterv1/features/events/presentation/widgets/calendario/custom_calendar_body.dart';
-import 'package:flutterv1/features/events/presentation/widgets/calendario/custom_calendar_header.dart';
-import 'package:flutterv1/features/events/presentation/widgets/day_events_modal.dart';
+import 'package:events_app/features/events/domain/entities/event.dart';
+import 'package:events_app/features/events/presentation/providers/events_notifier.dart';
+import 'package:events_app/features/events/presentation/widgets/calendario/custom_calendar_body.dart';
+import 'package:events_app/features/events/presentation/widgets/calendario/custom_calendar_header.dart';
+import 'package:events_app/features/events/presentation/widgets/day_events_modal.dart';
 import 'package:provider/provider.dart';
 
 class CustomCalendarTogether extends StatefulWidget {

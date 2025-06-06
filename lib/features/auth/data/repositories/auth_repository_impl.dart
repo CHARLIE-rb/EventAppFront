@@ -1,7 +1,7 @@
-import 'package:flutterv1/features/auth/data/datasources/auth_data_source.dart';
-import 'package:flutterv1/shared/data/mappers/user_mapper.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/features/auth/domain/repositories/auth_repository.dart';
+import 'package:events_app/features/auth/data/datasources/auth_data_source.dart';
+import 'package:events_app/shared/data/mappers/user_mapper.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource _authDataSource;
@@ -11,8 +11,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> loginWithEmail(String email, String password) async {
-    final user = _authDataSource.loginWithEmail(email, password);
-    return user;
+    return _authDataSource.loginWithEmail(email, password);
   }
 
   @override

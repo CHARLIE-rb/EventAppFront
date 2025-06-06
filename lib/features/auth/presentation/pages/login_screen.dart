@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterv1/core/navigation/routes.dart';
-import 'package:flutterv1/config/app_constants.dart';
-import 'package:flutterv1/features/auth/presentation/providers/auth_provider.dart';
-import 'package:flutterv1/features/theme/presentation/providers/theme_provider.dart';
-import 'package:flutterv1/shared/presentation/providers/session_provider.dart';
-import 'package:flutterv1/shared/presentation/widgets/mini/invierte_imagen_black_and_white.dart';
+import 'package:events_app/core/navigation/routes.dart';
+import 'package:events_app/config/app_constants.dart';
+import 'package:events_app/features/auth/presentation/providers/auth_provider.dart';
+import 'package:events_app/features/theme/presentation/providers/theme_provider.dart';
+import 'package:events_app/shared/presentation/providers/session_provider.dart';
+import 'package:events_app/shared/presentation/widgets/mini/invierte_imagen_black_and_white.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               InvierteImagenBnW(
                 theme: theme,
-                imagePath: AppConstants.LOGO_PATH,
+                imagePath: AppConstants.logoPath,
                 width: 300,
               ),
               const SizedBox(height: 16),
@@ -100,8 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (v) {
                           if (v == null ||
-                              v.length < AppConstants.MAX_LENGTH_PASS) {
-                            return 'Mínimo ${AppConstants.MAX_LENGTH_PASS} caracteres';
+                              v.length < AppConstants.maxLengthPass) {
+                            return 'Mínimo ${AppConstants.maxLengthPass} caracteres';
                           }
                           return null;
                         },
@@ -218,13 +218,15 @@ class _LoginScreenState extends State<LoginScreen> {
           _emailOrUsername,
           _password,
         );
+        if (mounted) {
+          context.read<SessionProvider>().reload();
+        }
       } catch (e) {
         setState(() {
           _error = e.toString();
         });
       } finally {
         if (mounted) {
-          context.read<SessionProvider>().reload();
           setState(() => _isLoading = false);
         }
       }

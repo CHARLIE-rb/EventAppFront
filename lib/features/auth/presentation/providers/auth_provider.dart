@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutterv1/shared/domain/entities/user.dart';
-import 'package:flutterv1/features/auth/domain/usecases/login_with_email.dart';
-import 'package:flutterv1/features/auth/domain/usecases/login_with_pin.dart';
-import 'package:flutterv1/features/auth/domain/usecases/register_user.dart';
+import 'package:events_app/shared/domain/entities/user.dart';
+import 'package:events_app/features/auth/domain/usecases/login_with_email.dart';
+import 'package:events_app/features/auth/domain/usecases/login_with_pin.dart';
+import 'package:events_app/features/auth/domain/usecases/register_user.dart';
 
 class AuthProvider extends ChangeNotifier {
   final LoginWithEmail _loginEmail;
@@ -12,13 +12,11 @@ class AuthProvider extends ChangeNotifier {
   AuthProvider(this._loginEmail, this._loginPin, this._registerUser);
 
   Future<bool> loginMail(String email, String pass) async {
-    await _loginEmail(email, pass);
-    return true;
+    return _loginEmail(email, pass);
   }
 
-  Future<bool> loginPin(String username, String pin) async {
-    await _loginPin(username, pin);
-    return true;
+  Future<bool> loginPin(String mail, String pin) async {
+    return _loginPin(mail, pin);
   }
 
   void register(User u) {

@@ -1,4 +1,4 @@
-import 'package:flutterv1/shared/domain/repositories/session_repository.dart';
+import 'package:events_app/shared/domain/repositories/session_repository.dart';
 
 class ClearSession {
   final SessionRepository _repo;
