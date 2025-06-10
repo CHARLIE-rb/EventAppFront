@@ -144,7 +144,7 @@ class _EventDetailBodyState extends State<_EventDetailBody> {
 
                   const SizedBox(height: 24),
 
-                  if (vmComments.isManager) ...[
+                  if (vmComments.isManager && !vmComments.within48h) ...[
                     ElevatedButton(
                       onPressed: () {
                         // showDialog(
@@ -223,7 +223,6 @@ class _EventDetailBodyState extends State<_EventDetailBody> {
                     ),
                   ],
 
-                  // — Feedback fijo tras 48h —
                   if (vmComments.isPastEvent && !vmComments.within48h) ...[
                     const Divider(),
                     if (widget.event.companyFeedback != null) ...[

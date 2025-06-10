@@ -99,6 +99,7 @@ class _FakeChatScreenState extends State<FakeChatScreen> {
                   autofocus: true,
                   textInputAction: TextInputAction.send,
                   onSubmitted: (_) => _sendMessage(),
+                  style: theme.textTheme.bodyMedium?.copyWith(fontSize: 18),
                   decoration: InputDecoration(
                     hintText: 'Escribe un mensaje…',
                     filled: true,

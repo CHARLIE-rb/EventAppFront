@@ -27,11 +27,16 @@ class EventsNotifier extends ChangeNotifier {
   String? _selectedBrand;
 
   Future<Event> getEventById(String id) async => _getEventById(id);
+
   Future<List<Event>> getEventsByIds(List<String> ids) async =>
       _getEventsByIds(ids);
+
   Future<List<Event>> get allEvents async => _getAll();
+
   TimeFilter get timeFilter => _timeFilter;
+
   String? get selectedBrand => _selectedBrand;
+
   Future<double> getTotalPayForEvent(String eventid) =>
       _getTotalPayForEvent(eventid);
 
@@ -73,29 +78,46 @@ class EventsNotifier extends ChangeNotifier {
 
   Future<List<Event>> get filteredEvents async {
     final now = DateTime.now();
-    Iterable<Event> temp;
+    List<Event> vuelta;
 
     switch (_timeFilter) {
       case TimeFilter.future:
-        temp = await _getAll().then(
+        var temp = await _getAll().then(
           (value) => value.where((e) => e.endDateTime.isAfter(now)),
         );
+        if (_selectedBrand != null && _selectedBrand!.isNotEmpty) {
+          temp = temp.where((e) => e.brand == _selectedBrand);
+        }
+        vuelta =
+            temp.toList()..sort(
+              (a, b) => a.startDateTime.compareTo(b.startDateTime),
+            ); //ascendente
         break;
       case TimeFilter.past:
-        temp = await _getAll().then(
+        var temp = await _getAll().then(
           (value) => value.where((e) => e.endDateTime.isBefore(now)),
         );
+        if (_selectedBrand != null && _selectedBrand!.isNotEmpty) {
+          temp = temp.where((e) => e.brand == _selectedBrand);
+        }
+        vuelta =
+            temp.toList()..sort(
+              (a, b) => b.startDateTime.compareTo(a.startDateTime),
+            ); //descendente
         break;
       case TimeFilter.all:
-        temp = await _getAll();
+        var temp = await _getAll();
+        if (_selectedBrand != null && _selectedBrand!.isNotEmpty) {
+          temp = temp.where((e) => e.brand == _selectedBrand).toList();
+        }
+        vuelta =
+            temp..sort(
+              (a, b) => b.startDateTime.compareTo(a.startDateTime),
+            ); //ascendente
         break;
     }
 
-    if (_selectedBrand != null && _selectedBrand!.isNotEmpty) {
-      temp = temp.where((e) => e.brand == _selectedBrand);
-    }
-
-    return temp.toList();
+    return vuelta;
   }
 
   Future<List<Event>> eventsForDay(DateTime day) async {
