@@ -1,6 +1,8 @@
+import 'package:events_app/features/events/presentation/providers/events_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:events_app/features/events/domain/entities/event.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsCard extends StatelessWidget {
@@ -24,11 +26,10 @@ class DetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalPay =
-        (event.endDateTime.difference(event.startDateTime).inHours *
-            event.ratePerHour);
+    final vmEvents = context.read<EventsNotifier>();
+    final totalPay = vmEvents.getTotalPayForEvent(event.id);
     return Card(
-      elevation: 2,
+      elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
@@ -50,11 +51,29 @@ class DetailsCard extends StatelessWidget {
                     style: theme.textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    '€${totalPay.toStringAsFixed(2)}',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                  FutureBuilder<double>(
+                    future: totalPay,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Mientras llega: spinner o placeholder
+                        return const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Text('-', style: theme.textTheme.bodyMedium);
+                      }
+
+                      final totalPay = snapshot.data ?? 0.0;
+                      return Text(
+                        '€${totalPay.toStringAsFixed(2)}',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

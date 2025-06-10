@@ -8,7 +8,7 @@ class UserRepositoryImpl extends UserRepository {
   final UserMapper userMapper;
   UserRepositoryImpl(this._userDataSource, this.userMapper);
   @override
-  Future<void> addUser(User user) async {
+  Future<void> createUser(User user) async {
     final userDataModel = userMapper.toModel(user);
     return _userDataSource.addUser(userDataModel);
   }
@@ -49,6 +49,16 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final userModel = await _userDataSource.getUserByMail(mail);
       return userMapper.toUser(userModel);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Future<List<User>?> getUsersByIds(List<String> userIds) async {
+    try {
+      final users = await _userDataSource.getUsersByIds(userIds);
+      return users.map((model) => userMapper.toUser(model)).toList();
     } catch (_) {
       return null;
     }

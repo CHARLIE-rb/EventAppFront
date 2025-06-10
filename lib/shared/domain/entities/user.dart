@@ -7,8 +7,8 @@ class User {
   final String lastName;
 
   final String email;
-  final String password;
-  final String pin;
+  // final String password;
+  // final String pin;
   final Role role;
 
   /// IDs de los eventos asignados (solo se usa para usuarios no-manager)
@@ -20,9 +20,9 @@ class User {
     required this.name,
     required this.lastName,
     required this.role,
-    required this.pin,
+    // required this.pin,
     required this.email,
-    required this.password,
+    // required this.password,
     this.registeredEventIds = const [],
   });
 }

@@ -47,10 +47,8 @@ class CommentsNotifier extends ChangeNotifier {
     DateTime.now(),
   ).isAfter(DateUtils.dateOnly(_event.endDateTime));
   bool get within48h =>
-      DateTime.now().isAfter(_event.endDateTime) &&
-      DateTime.now().isBefore(
-        _event.endDateTime.add(const Duration(hours: 48)),
-      );
+      DateTime.now().day > (_event.endDateTime.day) &&
+      DateTime.now().day <= (_event.endDateTime.day + 2);
 
   /// Devuelve el feedback del usuario actual (ya sea empleado o empresa)
   FeedBack? get myFeedback {

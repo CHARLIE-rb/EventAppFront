@@ -1,4 +1,5 @@
 // lib/features/navigation/domain/usecases/get_nav_items.dart
+import 'package:events_app/features/chat/presentation/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:events_app/features/navigation/domain/entities/nav_item.dart';
 import 'package:events_app/shared/domain/entities/user.dart' show Role;
@@ -14,12 +15,6 @@ class GetNavItems {
       screen: EventsScreen(),
       priority: 1,
     ),
-    // NavItem(
-    //   icon: Icons.settings,
-    //   label: 'Ajustes',
-    //   screen: SettingsScreen(),
-    //   priority: 10,
-    // ),
     NavItem(
       icon: Icons.person,
       label: 'Perfil',
@@ -30,11 +25,35 @@ class GetNavItems {
 
   final List<NavItem> employeeNavItems = [...commonNavItems];
 
-  final List<NavItem> ceoNavItems = [...commonNavItems];
+  final List<NavItem> ceoNavItems = [
+    ...commonNavItems,
+    NavItem(
+      icon: Icons.chat,
+      label: 'Consulta IA',
+      screen: FakeChatScreen(),
+      priority: 10,
+    ),
+  ];
 
-  final List<NavItem> managerNavItems = [...commonNavItems];
+  final List<NavItem> managerNavItems = [
+    ...commonNavItems,
+    NavItem(
+      icon: Icons.chat,
+      label: 'IA',
+      screen: FakeChatScreen(),
+      priority: 10,
+    ),
+  ];
 
-  final List<NavItem> companyNavItems = [...commonNavItems];
+  final List<NavItem> companyNavItems = [
+    ...commonNavItems,
+    NavItem(
+      icon: Icons.chat,
+      label: 'IA',
+      screen: FakeChatScreen(),
+      priority: 10,
+    ),
+  ];
 
   List<NavItem> call(Role role) {
     switch (role) {

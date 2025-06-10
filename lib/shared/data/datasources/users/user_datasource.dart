@@ -1,6 +1,7 @@
 import 'package:events_app/shared/data/models/user_model.dart';
 
 abstract class UserDataSource {
+  Future<List<UserModel>> getUsersByIds(List<String> userIds);
   Future<UserModel> getUserById(String userId);
   Future<UserModel> getUserByMail(String mail);
   Future<List<UserModel>> getAllUsers();

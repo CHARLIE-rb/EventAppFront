@@ -52,4 +52,13 @@ class LocalUserDatasource implements UserDataSource {
       orElse: () => throw Exception('User not found'),
     );
   }
+
+  @override
+  Future<List<UserModel>> getUsersByIds(List<String> userIds) async {
+    final users = _users.where((user) => userIds.contains(user.id)).toList();
+    if (users.isEmpty) {
+      throw Exception('No users found for the provided IDs');
+    }
+    return users;
+  }
 }

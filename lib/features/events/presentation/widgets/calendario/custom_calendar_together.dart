@@ -87,7 +87,6 @@ class _CustomCalendarTogetherState extends State<CustomCalendarTogether> {
               );
             }
 
-            // 2.3) Estado “datos”: ya tenemos List<Event> en snapshot.data
             final allEvents = snapshot.data!;
 
             return CustomCalendarBody(

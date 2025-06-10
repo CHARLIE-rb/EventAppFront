@@ -18,11 +18,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
     final theme = Theme.of(context);
     final navigator = Navigator.of(context);
     return AlertDialog(
-      // Reducimos los márgenes laterales para disponer de más ancho:
-      insetPadding: const EdgeInsets.symmetric(
-        horizontal: 24.0,
-        vertical: 24.0,
-      ),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       contentPadding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       title: const Text('Ajustes'),
       content: SizedBox(

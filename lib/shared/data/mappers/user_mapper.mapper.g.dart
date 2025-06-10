@@ -17,9 +17,7 @@ class UserMapperImpl extends UserMapper {
       name: model.name,
       lastName: model.lastName,
       role: roleFromString(model.role),
-      pin: model.pin,
       email: model.email,
-      password: model.password,
     );
     return user;
   }
@@ -32,8 +30,6 @@ class UserMapperImpl extends UserMapper {
       name: user.name,
       lastName: user.lastName,
       email: user.email,
-      password: user.password,
-      pin: user.pin,
       role: roleToString(user.role),
     );
     return usermodel;

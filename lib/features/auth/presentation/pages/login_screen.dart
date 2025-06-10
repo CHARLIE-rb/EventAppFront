@@ -70,10 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextFormField(
                         decoration: InputDecoration(
-                          icon: Icon(
-                            Icons.email,
-                            color: theme.colorScheme.secondary,
-                          ),
+                          icon: Icon(Icons.email),
                           hintText: 'Enter Your Username/Email',
                           hintStyle: theme.textTheme.bodyMedium,
                           labelText: 'Email or Username',

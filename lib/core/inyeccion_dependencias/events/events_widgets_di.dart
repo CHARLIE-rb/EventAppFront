@@ -4,6 +4,7 @@ import 'package:events_app/features/events/data/repositories/event_widget_reposi
 import 'package:events_app/features/events/domain/repositories/event_widget_repository.dart';
 import 'package:events_app/features/events/domain/usecases/forWidgets/get_all_employee_expandible_items_list.dart';
 import 'package:events_app/features/events/presentation/providers/events_details_notifier.dart';
+import 'package:events_app/shared/domain/usecases/users/get_users_by_ids.dart';
 import 'package:get_it/get_it.dart';
 
 void initEventsWidgetsModule(GetIt getIt) {
@@ -11,8 +12,15 @@ void initEventsWidgetsModule(GetIt getIt) {
     () => EventWidgetDataSourceImpl(),
   );
   getIt.registerLazySingleton<EventWidgetRepository>(
-    () => EventWidgetRepositoryImpl(getIt()),
+    () => EventWidgetRepositoryImpl(getIt<EventWidgetDataSource>()),
   );
-  getIt.registerLazySingleton(() => GetAllEmployeeExpandibleItemsList(getIt()));
-  getIt.registerFactory(() => EventsDetailsNotifier(getIt()));
+  getIt.registerLazySingleton(
+    () => GetAllEmployeeExpandibleItemsList(getIt<EventWidgetRepository>()),
+  );
+  getIt.registerFactory(
+    () => EventsDetailsNotifier(
+      getIt<GetAllEmployeeExpandibleItemsList>(),
+      getIt<GetUsersByIds>(),
+    ),
+  );
 }

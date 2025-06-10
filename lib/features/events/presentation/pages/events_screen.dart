@@ -120,7 +120,7 @@ class _EventsScreenState extends State<EventsScreen> {
                           items: [
                             const DropdownMenuItem(
                               value: null,
-                              child: Text('Todas'),
+                              child: Text('Todas las marcas'),
                             ),
                             ...brands.map(
                               (marca) => DropdownMenuItem(

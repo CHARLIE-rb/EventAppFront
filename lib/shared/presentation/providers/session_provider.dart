@@ -7,7 +7,7 @@ import 'package:events_app/shared/domain/usecases/session/clear_session.dart';
 import 'package:events_app/shared/domain/usecases/session/get_current_session.dart';
 import 'package:events_app/shared/domain/usecases/session/get_current_user.dart';
 import 'package:events_app/shared/domain/usecases/session/get_current_session_status.dart';
-import 'package:events_app/shared/domain/usecases/users/load_last_user.dart';
+import 'package:events_app/shared/domain/usecases/session/load_last_user.dart';
 
 class SessionProvider extends ChangeNotifier {
   final GetCurrentUser _getCurrentUser;

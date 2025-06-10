@@ -12,8 +12,8 @@ class UserModel {
     required this.name,
     required this.lastName,
     required this.email,
-    required this.password,
-    required this.pin,
+    this.password = '',
+    this.pin = '',
     this.eventsIds = const [],
     required this.role,
   });

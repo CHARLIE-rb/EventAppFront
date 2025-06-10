@@ -24,8 +24,7 @@ class _RootAppFlowState extends State<RootAppFlow> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final userProvider = context.read<SessionProvider>();
-    final nav = context.watch<NavNotifier>();
-    final navItems = nav.items;
+    final navItems = context.watch<NavNotifier>().items;
 
     if (navItems.isEmpty) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));

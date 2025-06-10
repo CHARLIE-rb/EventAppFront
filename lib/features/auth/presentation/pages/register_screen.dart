@@ -54,8 +54,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       name: _nameCtrl.text.trim(),
       lastName: _lastNameCtrl.text.trim(),
       email: _emailCtrl.text.trim(),
-      password: _passwordCtrl.text,
-      pin: _pinCtrl.text,
+      // password: _passwordCtrl.text,
+      // pin: _pinCtrl.text,
       role: _selectedRole!,
     );
     context.read<AuthProvider>().register(newUser);

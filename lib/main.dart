@@ -1,3 +1,4 @@
+import 'package:events_app/shared/presentation/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:events_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:events_app/shared/presentation/providers/session_provider.dart';
@@ -30,6 +31,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider.value(value: sessionProvider),
         ChangeNotifierProvider.value(value: getIt<AuthProvider>()),
+        ChangeNotifierProvider.value(value: getIt<UserProvider>()),
         ChangeNotifierProvider.value(value: getIt<NavNotifier>()),
         ChangeNotifierProvider.value(value: getIt<SettingsProvider>()),
         ChangeNotifierProvider.value(value: getIt<ThemeProvider>()),
